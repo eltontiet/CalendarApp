@@ -5,3 +5,9 @@ public class Main {
 
     }
 }
+
+/*
+
+GO FROM DATE/TIME -> EVENT/NOTE -> ACTIVITY -> SCHEDULE -> CALENDAR
+
+ */
