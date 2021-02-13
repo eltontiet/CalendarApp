@@ -2,8 +2,8 @@ package model.date;
 
 // Represents the time in hours and minutes in the 24h clock
 public class Time {
-    private int hours;
-    private int minutes;
+    private final int hours;
+    private final int minutes;
 
     // REQUIRES: 0 <= hours <= 23, 0 <= minutes <= 59
     // EFFECTS: the time's hours is set to hours,
@@ -15,21 +15,43 @@ public class Time {
 
     // EFFECTS: returns time in format: hh:mmXM
     public String get12HTime() {
-        return "";
+        String minutesString;
+
+        if (minutes < 10) {
+            minutesString = "0" + minutes;
+        } else {
+            minutesString = Integer.toString(minutes);
+        }
+
+        if (hours > 12) {
+            return (hours - 12) + ":" + minutesString + "PM";
+        } else if (hours == 12) {
+            return "12:" + minutesString + "PM";
+        } else if (hours == 0) {
+            return "12:" + minutesString + "AM";
+        } else {
+            return hours + ":" + minutesString + "AM";
+        }
     }
 
     // EFFECTS: returns time in format: hh:mm
     public String get24HTime() {
-        return "";
+        String minutesString;
+
+        if (minutes < 10) {
+            minutesString = "0" + minutes;
+        } else {
+            minutesString = Integer.toString(minutes);
+        }
+
+        return hours + ":" + minutesString;
     }
 
-    // ??
     public int getHours() {
-        return 0;
+        return hours;
     }
 
-    // ??
     public int getMinutes() {
-        return 0;
+        return minutes;
     }
 }

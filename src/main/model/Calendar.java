@@ -5,9 +5,9 @@ import java.util.List;
 
 // Represents a calendar with a name, a list of schedules, and a list of events
 public class Calendar {
-    private String name;
-    private List<Schedule> schedules;
-    private List<Event> events;
+    private final String name;
+    private final List<Schedule> schedules;
+    private final List<Event> events;
 
     // EFFECTS: The schedule's name is set to name
     //          activities is set to an empty arraylist

@@ -9,12 +9,12 @@ import java.util.List;
 // Represents a recurring activity with a name, dates of the activity,
 // time, duration, list of notes, and list of events
 public class Activity {
-    private String name;
-    private List<Date> dates;
-    private Time time;
-    private int duration;
-    private List<Note> notes;
-    private List<Event> events;
+    private final String name;
+    private final List<Date> dates;
+    private final Time time;
+    private final int duration;
+    private final List<Note> notes;
+    private final List<Event> events;
 
     // EFFECTS: constructs an activity with a name, time, duration,
     // and empty lists for dates, notes and events for this activity

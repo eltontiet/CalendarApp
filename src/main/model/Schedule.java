@@ -7,8 +7,8 @@ import java.util.List;
 
 // Represents a schedule that has a list of activities, and a name
 public class Schedule {
-    private String name;
-    private List<Activity> activities;
+    private final String name;
+    private final List<Activity> activities;
 
     // EFFECTS: The schedule's name is set to name
     //          activities is set to an empty arraylist
