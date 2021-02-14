@@ -2,35 +2,35 @@ package model.date;
 
 // Represents the time in hours and minutes in the 24h clock
 public class Time {
-    private final int hours;
-    private final int minutes;
+    private final int hour;
+    private final int minute;
 
     // REQUIRES: 0 <= hours <= 23, 0 <= minutes <= 59
     // EFFECTS: the time's hours is set to hours,
     //          the time's minutes is set to minutes,
-    public Time(int hours, int minutes) {
-        this.hours = hours;
-        this.minutes = minutes;
+    public Time(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
     }
 
     // EFFECTS: returns time in format: hh:mmXM
     public String get12HTime() {
         String minutesString;
 
-        if (minutes < 10) {
-            minutesString = "0" + minutes;
+        if (minute < 10) {
+            minutesString = "0" + minute;
         } else {
-            minutesString = Integer.toString(minutes);
+            minutesString = Integer.toString(minute);
         }
 
-        if (hours > 12) {
-            return (hours - 12) + ":" + minutesString + "PM";
-        } else if (hours == 12) {
+        if (hour > 12) {
+            return (hour - 12) + ":" + minutesString + "PM";
+        } else if (hour == 12) {
             return "12:" + minutesString + "PM";
-        } else if (hours == 0) {
+        } else if (hour == 0) {
             return "12:" + minutesString + "AM";
         } else {
-            return hours + ":" + minutesString + "AM";
+            return hour + ":" + minutesString + "AM";
         }
     }
 
@@ -38,20 +38,20 @@ public class Time {
     public String get24HTime() {
         String minutesString;
 
-        if (minutes < 10) {
-            minutesString = "0" + minutes;
+        if (minute < 10) {
+            minutesString = "0" + minute;
         } else {
-            minutesString = Integer.toString(minutes);
+            minutesString = Integer.toString(minute);
         }
 
-        return hours + ":" + minutesString;
+        return hour + ":" + minutesString;
     }
 
-    public int getHours() {
-        return hours;
+    public int getHour() {
+        return hour;
     }
 
-    public int getMinutes() {
-        return minutes;
+    public int getMinute() {
+        return minute;
     }
 }

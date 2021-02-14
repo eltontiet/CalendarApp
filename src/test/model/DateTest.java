@@ -138,19 +138,19 @@ class TimeTest {
 
     @Test
     void testGetHours() {
-        assertEquals(23, time1.getHours());
-        assertEquals(13, time2.getHours());
-        assertEquals(12, time3.getHours());
-        assertEquals(0, time4.getHours());
-        assertEquals(11, time5.getHours());
+        assertEquals(23, time1.getHour());
+        assertEquals(13, time2.getHour());
+        assertEquals(12, time3.getHour());
+        assertEquals(0, time4.getHour());
+        assertEquals(11, time5.getHour());
     }
 
     @Test
     void testGetMinutes() {
-        assertEquals(8, time1.getMinutes());
-        assertEquals(31, time2.getMinutes());
-        assertEquals(0, time3.getMinutes());
-        assertEquals(0, time4.getMinutes());
-        assertEquals(45, time5.getMinutes());
+        assertEquals(8, time1.getMinute());
+        assertEquals(31, time2.getMinute());
+        assertEquals(0, time3.getMinute());
+        assertEquals(0, time4.getMinute());
+        assertEquals(45, time5.getMinute());
     }
 }

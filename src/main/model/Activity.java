@@ -9,12 +9,12 @@ import java.util.List;
 // Represents a recurring activity with a name, dates of the activity,
 // time, duration, list of notes, and list of events
 public class Activity {
-    private final String name;
-    private final List<Date> dates;
-    private final Time time;
-    private final int duration;
-    private final List<Note> notes;
-    private final List<Event> events;
+    private String name;
+    private List<Date> dates;
+    private Time time;
+    private int duration;
+    private List<Note> notes;
+    private List<Event> events;
 
     // EFFECTS: constructs an activity with a name, time, duration,
     // and empty lists for dates, notes and events for this activity
@@ -51,69 +51,77 @@ public class Activity {
         return events;
     }
 
-    // REQUIRES: there is a note in notes with a title of title
-    // EFFECTS: returns the note with title of title
+    // EFFECTS: returns the note with title of title, or null
     public Note getNote(String title) {
+        for (Note i:notes) {
+            if (i.getTitle() == title) {
+                return i;
+            }
+        }
         return null;
     }
 
-    // REQUIRES: there is an event in events with a name of name
-    // EFFECTS: returns the event with name of name
+    // EFFECTS: returns the event with name of name, or null
     public Event getEvent(String name) {
+        for (Event i:events) {
+            if (i.getName() == name) {
+                return i;
+            }
+        }
         return null;
     }
 
     public void setName(String name) {
-
+        this.name = name;
     }
 
     public void setDuration(int duration) {
-
+        this.duration = duration;
     }
 
     public void setTime(Time time) {
-
+        this.time = time;
     }
 
     // REQUIRES: date is not already in dates
     // MODIFIES: this
     // EFFECTS: adds the date to the list of this.dates
     public void addDate(Date date) {
-
+        dates.add(date);
     }
 
     // REQUIRES: date is in dates
     // MODIFIES: this
     // EFFECTS: removes the date from the list of this.dates
     public void removeDate(Date date) {
-
+        dates.remove(date);
     }
 
     // REQUIRES: note does not have the same title as an element in the list
     // MODIFIES: this
     // EFFECTS: adds the note to the list of this.notes
     public void addNote(Note note) {
-
+        notes.add(note);
     }
 
     // REQUIRES: note is in notes
     // MODIFIES: this
     // EFFECTS: removes the note from the list of this.notes
     public void removeNote(Note note) {
-
+        notes.remove(note);
     }
 
     // REQUIRES: event does not have the same name as one of the events in the list
     // MODIFIES: this
     // EFFECTS: adds the event to the list of this.events
     public void addEvent(Event event) {
-
+        events.add(event);
     }
 
     // REQUIRES: event is in events
     // MODIFIES: this
     // EFFECTS: removes the event from the list of this.events
     public void removeEvent(Event event) {
-
+        events.remove(event);
     }
 }
