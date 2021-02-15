@@ -76,14 +76,14 @@ public class ActivityTest {
     void testGetNote() {
         assertEquals("Learn java", activity.getNote("Java").getBody());
         assertEquals("Do well in the class please!", activity.getNote("Grades").getBody());
-        assertEquals(null, activity.getNote("Fail"));
+        assertNull(activity.getNote("Fail"));
     }
 
     @Test
     void testGetEvent() {
         assertEquals(0, activity.getEvent("Project Phase 1").getDuration());
         assertEquals(60, activity.getEvent("Midterm 1").getDuration());
-        assertEquals(null, activity.getEvent("Problem Set 9"));
+        assertNull(activity.getEvent("Problem Set 9"));
     }
 
     @Test
@@ -147,5 +147,17 @@ public class ActivityTest {
         assertTrue(activity.getEvents().contains(testEvent1));
         assertFalse(activity.getEvents().contains(testEvent2));
         assertEquals(3, activity.getEvents().size());
+    }
+
+    @Test
+    void testSetActivity() {
+        Time time = new Time(11,0);
+        int duration = 60;
+        Activity testActivity = new Activity("Cpsc 210", time, duration);
+        activity.setActivity(testActivity);
+
+        assertEquals("Cpsc 210", activity.getName());
+        assertEquals("11:00", activity.getTime().get24HTime());
+        assertEquals(0, activity.getDates().size());
     }
 }

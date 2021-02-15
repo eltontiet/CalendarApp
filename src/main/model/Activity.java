@@ -18,6 +18,7 @@ public class Activity {
 
     // EFFECTS: constructs an activity with a name, time, duration,
     // and empty lists for dates, notes and events for this activity
+    // If the duration is 0, there is no time for the activity
     public Activity(String name, Time time, int duration) {
         this.name = name;
         this.time = time;
@@ -125,5 +126,16 @@ public class Activity {
     // EFFECTS: removes the event from the list of this.events
     public void removeEvent(Event event) {
         events.remove(event);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets this activity to be the same as newActivity
+    public void setActivity(Activity newActivity) {
+        this.name = newActivity.getName();
+        this.dates = newActivity.getDates();
+        this.time = newActivity.getTime();
+        this.duration = newActivity.getDuration();
+        this.notes = newActivity.getNotes();
+        this.events = newActivity.getEvents();
     }
 }

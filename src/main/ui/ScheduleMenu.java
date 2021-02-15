@@ -3,7 +3,6 @@ package ui;
 import model.Calendar;
 import model.Schedule;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // Change schedule name, add or remove schedules

@@ -92,6 +92,7 @@ public class EventMenu extends Menu {
         }
     }
 
+    // EFFECTS: prompts user to select an event, and processes it
     private void processViewEvent() {
         Event event;
         System.out.println("Choose the number of an event, or write the name of it");
@@ -110,6 +111,7 @@ public class EventMenu extends Menu {
         }
     }
 
+    // EFFECTS: prints out all events in a list
     private void listEventList() {
         List<String> list = new ArrayList<>();
         for (Event event : eventList) {
@@ -119,7 +121,7 @@ public class EventMenu extends Menu {
     }
 
     // MODIFIES: this
-    // EFFECTS: lists out all schedules, then prompts user
+    // EFFECTS: lists out all events, then prompts user
     //          to choose what to remove from the list
     @Override
     protected void removeItem() {
@@ -129,7 +131,8 @@ public class EventMenu extends Menu {
         removeEvent(command);
     }
 
-    // EFFECTS: removes the schedule from the list
+    // MODIFIES: this
+    // EFFECTS: removes the event from the list
     private void removeEvent(String command) {
         Event event;
         if (activity == null) {
@@ -155,8 +158,8 @@ public class EventMenu extends Menu {
         editEvent(command);
     }
 
-    // TODO URGENT: implement edit
-    // EFFECTS: prompts user to edit the schedule
+    // MODIFIES: this
+    // EFFECTS: prompts user to edit the event
     private void editEvent(String command) {
         Event event;
         if (activity == null) {
@@ -256,16 +259,6 @@ public class EventMenu extends Menu {
         }
     }
 
-    // EFFECTS: prints out event name, date, time, and duration
-    private void printEvent(Event event) {
-        System.out.println("\t" + event.getName());
-        System.out.println("\t" + event.getDate().getDate());
-        System.out.println("\t" + event.getTime().get12HTime());
-        if (event.getDuration() != 0) {
-            System.out.println("\tFor " + event.getDuration() + " minutes");
-        }
-    }
-
     // EFFECTS: Asks user for confirmation about the new event
     private void confirmEvent(Event event) {
         System.out.println("\nDo you want to make a new event: ");
@@ -294,7 +287,7 @@ public class EventMenu extends Menu {
     }
 
     // EFFECTS: prompts user to input name for name, date
-    //          time and duration, and add it to eventList
+    //          time and duration, and returns the event
     private Event makeEvent() {
         String name;
         Date date;
@@ -369,7 +362,7 @@ public class EventMenu extends Menu {
         return new Date(year, month, day);
     }
 
-    // EFFECTS: prompts the user for the minute that
+    // EFFECTS: prompts the user for the day that
     //          the event takes place
     private int getDay(int month) {
         Date infoDate = new Date(2002, month,1);
@@ -388,7 +381,7 @@ public class EventMenu extends Menu {
         }
     }
 
-    // EFFECTS: prompts the user for the minute that
+    // EFFECTS: prompts the user for the month that
     //          the event takes place
     private int getMonth() {
         System.out.println("What month is the event? ");
@@ -404,7 +397,7 @@ public class EventMenu extends Menu {
         }
     }
 
-    // EFFECTS: prompts the user for the minute that
+    // EFFECTS: prompts the user for the year that
     //          the event takes place
     private int getYear() {
         System.out.println("What year is the event? ");

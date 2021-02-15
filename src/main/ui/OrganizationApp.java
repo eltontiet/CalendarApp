@@ -2,6 +2,7 @@ package ui;
 
 import model.*;
 import model.date.Date;
+import model.date.Time;
 
 import java.util.List;
 import java.util.Scanner;
@@ -44,7 +45,15 @@ public class OrganizationApp {
     // MODIFIES: this
     // EFFECTS: initializes calendar
     private void init() {
+        Schedule schedule;
+        Activity activity;
+
         calendar = new Calendar("My Calendar");
+        schedule = new Schedule("Beginner Schedule");
+        activity = new Activity("Beginner Activity",new Time(0,0),0);
+
+        schedule.addActivity(activity);
+        calendar.addSchedule(schedule);
         input = new Scanner(System.in);
     }
 
@@ -133,8 +142,8 @@ public class OrganizationApp {
     // EFFECTS: outputs options to the user
     private void displayMenu() {
         System.out.println("\nChoose an option:");
-        System.out.println("\tv to view calendar");
-        System.out.println("\tc to overview calendar");
+        System.out.println("\tv to view calendar (Not yet implemented)");
+        System.out.println("\tc to overview calendar (Not yet implemented)");
         System.out.println("\ts to view schedule");
         System.out.println("\ta to view activities");
         System.out.println("\te to view events");

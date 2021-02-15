@@ -1,9 +1,7 @@
 package ui;
 
-import model.Activity;
-import model.Calendar;
-import model.Event;
-import model.Schedule;
+import model.*;
+import model.date.Date;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +70,7 @@ public abstract class Menu {
         int index;
         try {
             index = Integer.parseInt(command) - 1;
-            if (index < scheduleList.size()) {
+            if (index < scheduleList.size() && !(index < 0)) {
                 return scheduleList.get(index);
             } else {
                 System.out.println("please choose a valid input");
@@ -206,5 +204,37 @@ public abstract class Menu {
             list.add(event.getName());
         }
         listItem(list);
+    }
+
+    // EFFECTS: prints out event name, date, time, and duration
+    protected void printEvent(Event event) {
+        System.out.println("\t" + event.getName());
+        System.out.println("\t" + event.getDate().getDate());
+        System.out.println("\t" + event.getTime().get12HTime());
+        if (event.getDuration() != 0) {
+            System.out.println("\tFor " + event.getDuration() + " minutes");
+        }
+    }
+
+    // EFFECTS: prints out event name, date, time, and duration
+    protected void printActivity(Activity activity) {
+        System.out.println("\t" + activity.getName());
+
+        System.out.println("\tDates:");
+        for (Date d: activity.getDates()) {
+            System.out.println("\t\t" + d.getDate());
+        }
+
+        System.out.println("\n\t" + activity.getTime().get12HTime());
+
+        if (activity.getDuration() != 0) {
+            System.out.println("\tFor " + activity.getDuration() + " minutes");
+        }
+
+        System.out.println("\tNotes:");
+        for (Note n: activity.getNotes()) {
+            System.out.println("\t  Title: " + n.getTitle());
+            System.out.println("\t  Body: " + n.getBody());
+        }
     }
 }
