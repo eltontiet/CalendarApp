@@ -11,6 +11,7 @@ public class Event {
     private int duration;
 
     // EFFECTS: constructs an event with name, date, time, and duration in minutes
+    //          a duration of 0 means that there is no duration. Ex. a due date
     public Event(String name, Date date, Time time, int duration) {
         this.name = name;
         this.date = date;
@@ -18,6 +19,7 @@ public class Event {
         this.duration = duration;
     }
 
+    // getters
     public String getName() {
         return name;
     }
@@ -34,27 +36,29 @@ public class Event {
         return duration;
     }
 
-    // MODIFIES: this
-    // EFFECTS: changes the name of the event
+    // setters
     public void setName(String name) {
         this.name = name;
     }
 
-    // MODIFIES: this
-    // EFFECTS: changes the date of the event
     public void setDate(Date date) {
         this.date = date;
     }
 
-    // MODIFIES: this
-    // EFFECTS: changes the time of the event
     public void setTime(Time time) {
         this.time = time;
     }
 
-    // MODIFIES: this
-    // EFFECTS: changes the duration of the event
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets this event to be equal to new event
+    public void setEvent(Event newEvent) {
+        this.name = newEvent.getName();
+        this.date = newEvent.getDate();
+        this.time = newEvent.getTime();
+        this.duration = newEvent.getDuration();
     }
 }

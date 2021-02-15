@@ -2,8 +2,8 @@ package model.date;
 
 // Represents the time in hours and minutes in the 24h clock
 public class Time {
-    private final int hour;
-    private final int minute;
+    private int hour;
+    private int minute;
 
     // REQUIRES: 0 <= hours <= 23, 0 <= minutes <= 59
     // EFFECTS: the time's hours is set to hours,
@@ -47,11 +47,21 @@ public class Time {
         return hour + ":" + minutesString;
     }
 
+    // getters
     public int getHour() {
         return hour;
     }
 
     public int getMinute() {
         return minute;
+    }
+
+    // setters
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
     }
 }

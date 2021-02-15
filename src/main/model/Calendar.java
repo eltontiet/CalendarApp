@@ -17,6 +17,7 @@ public class Calendar {
         events = new ArrayList<>();
     }
 
+    // getters
     public String getName() {
         return name;
     }
@@ -33,7 +34,7 @@ public class Calendar {
     // EFFECTS: returns the schedule with name of name
     public Schedule getSchedule(String name) {
         for (Schedule i: schedules) {
-            if (i.getName() == name) {
+            if (i.getName().equals(name)) {
                 return i;
             }
         }
@@ -44,7 +45,7 @@ public class Calendar {
     // EFFECTS: returns the event with name of name
     public Event getEvent(String name) {
         for (Event i: events) {
-            if (i.getName() == name) {
+            if (i.getName().equals(name)) {
                 return i;
             }
         }

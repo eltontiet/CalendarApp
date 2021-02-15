@@ -23,6 +23,8 @@ different websites to teach, it is very easy to miss an assignment or lecture.
 - As a user, I want to be able to add activities to my schedule
 - As a user, I want to be able to create notes about those activities
 - As a user, I want to be able to add to-do lists to my activities
+
+# Not yet implemented
 - As a user, I want to be able to mark my tasks as complete
 - As a user, I want to be reminded about what tasks I need to complete, and my upcoming activities
 - As a user, I want to choose when I will be reminded about my activities

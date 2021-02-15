@@ -65,5 +65,17 @@ public class EventTest {
         event.setDuration(15);
         assertEquals(15,event.getDuration());
     }
+
+    @Test
+    void testSetEvent() {
+        Date date = new Date(2021,2,15);
+        Time time = new Time(12,0);
+        Event testEvent = new Event("Hello", date, time, 0);
+        event.setEvent(testEvent);
+        assertEquals("Hello", event.getName());
+        assertEquals(date, event.getDate());
+        assertEquals(time, event.getTime());
+        assertEquals(0, event.getDuration());
+    }
 }
 

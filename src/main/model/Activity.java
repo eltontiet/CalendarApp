@@ -27,6 +27,7 @@ public class Activity {
         events = new ArrayList<>();
     }
 
+    // getters
     public String getName() {
         return name;
     }
@@ -54,23 +55,14 @@ public class Activity {
     // EFFECTS: returns the note with title of title, or null
     public Note getNote(String title) {
         for (Note i:notes) {
-            if (i.getTitle() == title) {
+            if (i.getTitle().equals(title)) {
                 return i;
             }
         }
         return null;
     }
 
-    // EFFECTS: returns the event with name of name, or null
-    public Event getEvent(String name) {
-        for (Event i:events) {
-            if (i.getName() == name) {
-                return i;
-            }
-        }
-        return null;
-    }
-
+    // setters
     public void setName(String name) {
         this.name = name;
     }
@@ -81,6 +73,16 @@ public class Activity {
 
     public void setTime(Time time) {
         this.time = time;
+    }
+
+    // EFFECTS: returns the event with name of name, or null
+    public Event getEvent(String name) {
+        for (Event i:events) {
+            if (i.getName().equals(name)) {
+                return i;
+            }
+        }
+        return null;
     }
 
     // REQUIRES: date is not already in dates

@@ -23,6 +23,12 @@ public class ScheduleTest {
     }
 
     @Test
+    void testSetName() {
+        schedule.setName("Reading Week");
+        assertEquals("Reading Week", schedule.getName());
+    }
+
+    @Test
     void testGetActivities() {
         Activity activity1 = new Activity("CPSC 210", new Time(10,0), 60);
         Activity activity2 = new Activity("CPSC 121", new Time(9,0),60);
@@ -41,7 +47,7 @@ public class ScheduleTest {
         schedule.addActivity(activity2);
         assertEquals(activity1, schedule.getActivity("CPSC 210"));
         assertEquals(activity2, schedule.getActivity("CPSC 121"));
-        assertEquals(null, schedule.getActivity("CPSC 110"));
+        assertNull(schedule.getActivity("CPSC 110"));
     }
 
     @Test

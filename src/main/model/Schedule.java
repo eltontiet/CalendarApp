@@ -17,6 +17,7 @@ public class Schedule {
         activities = new ArrayList<>();
     }
 
+    // getters
     public String getName() {
         return name;
     }
@@ -25,10 +26,14 @@ public class Schedule {
         return activities;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     // EFFECTS: returns the activity with name of name, or false
     public Activity getActivity(String name) {
         for (Activity i:activities) {
-            if (i.getName() == name) {
+            if (i.getName().equals(name)) {
                 return i;
             }
         }
