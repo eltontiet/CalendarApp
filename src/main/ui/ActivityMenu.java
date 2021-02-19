@@ -1,5 +1,6 @@
 package ui;
 
+import com.sun.xml.internal.ws.developer.Serialization;
 import model.*;
 import model.date.Date;
 import model.date.Time;
@@ -33,6 +34,7 @@ public class ActivityMenu extends Menu {
     //          and goes to chooseActivity()
     private void chooseSchedule(String input) {
         Schedule schedule = getSchedule(input, calendar);
+
         if (schedule == null) {
             getActivityList();
         } else {
@@ -43,6 +45,7 @@ public class ActivityMenu extends Menu {
     // EFFECTS: Processes user input
     private void processInput() {
         String command = getInput();
+
         switch (command.toLowerCase()) {
             case "v":
                 processViewActivity();
@@ -139,15 +142,8 @@ public class ActivityMenu extends Menu {
     // EFFECTS: processes input, and sets up an activity to edit
     private void getEditCommand(Activity activity) {
         String input = getInput();
-        Activity newActivity = new Activity(activity.getName(), activity.getTime(), activity.getDuration());
-
-        for (Date d : activity.getDates()) {
-            newActivity.addDate(d);
-        }
-
-        for (Note n : activity.getNotes()) {
-            activity.addNote(n);
-        }
+        Activity newActivity = new Activity("", new Time(0,0), 0);
+        newActivity.setActivity(activity);
 
         chooseEditActivity(newActivity, input);
 
@@ -221,8 +217,10 @@ public class ActivityMenu extends Menu {
         String input;
         int index;
         Note note = null;
+
         System.out.println("Select a note based on the number beside it");
         listNotes(newActivity);
+
         input = getInput();
         index = inputToInt(input);
 
@@ -230,7 +228,7 @@ public class ActivityMenu extends Menu {
             note = newActivity.getNotes().get(index);
         } else {
             System.out.println("Please provide a valid input");
-            editNote(newActivity);
+            editNotes(newActivity);
         }
 
         newActivity.removeNote(note);
@@ -243,12 +241,14 @@ public class ActivityMenu extends Menu {
         String input;
         int index;
         Note note;
+
         System.out.println("Select a note based on the number beside it");
         listNotes(newActivity);
-        input = getInput();
-        index = inputToInt(input);
 
-        if (index < newActivity.getNotes().size()) {
+        input = getInput();
+        index = inputToInt(input) - 1;
+
+        if (index < newActivity.getNotes().size() && !(index < 0)) {
             note = newActivity.getNotes().get(index);
             editTitle(note);
             editBody(note);
@@ -261,19 +261,21 @@ public class ActivityMenu extends Menu {
     // MODIFIES: this
     // EFFECTS: prompts user to either keep title, or change it
     private void editTitle(Note note) {
-        System.out.println("\nDo you want to change the title of the note?:");
-        System.out.println(note.getTitle() + " (y/n)");
+        System.out.println("\nDo you want to change the title of the note? " + note.getTitle() + ":");
+        System.out.println("(y/n)");
+
         if (getInput().equals("y")) {
             System.out.println("Now Editing: \n");
-            note.editBody(getInput());
+            note.editTitle(getInput());
         }
     }
 
     // MODIFIES: this
     // EFFECTS: prompts user to either keep body, or change it
     private void editBody(Note note) {
-        System.out.println("\nDo you want to change the body of the note?:");
-        System.out.println(note.getBody() + " (y/n)");
+        System.out.println("\nDo you want to change the body of the note? (y/n)");
+        System.out.println("\t" + note.getBody());
+
         if (getInput().equals("y")) {
             System.out.println("Now Editing: \n");
             note.editBody(getInput());
@@ -290,6 +292,7 @@ public class ActivityMenu extends Menu {
     //          with a number corresponding to its index
     private void listNotes(Activity newActivity) {
         List<String> list = new ArrayList<>();
+
         for (Note n: newActivity.getNotes()) {
             list.add(n.getTitle());
         }
@@ -334,8 +337,10 @@ public class ActivityMenu extends Menu {
     private void confirmEdit(Activity activity, Activity newActivity) {
         System.out.println("\nDo you want to change the event from: ");
         printActivity(activity);
+
         System.out.println("to: ");
         printActivity(newActivity);
+
         System.out.println("(y/n)");
         String command = getInput();
 
@@ -399,6 +404,7 @@ public class ActivityMenu extends Menu {
         note = inputNote();
 
         Activity activity = new Activity(name, time, duration);
+
         for (Date d: dates) {
             activity.addDate(d);
         }
@@ -426,6 +432,7 @@ public class ActivityMenu extends Menu {
         System.out.println("How long is the event in minutes? (0 for no time)");
         String input = getInput();
         int duration = inputToInt(input);
+
         if (duration < 0) {
             System.out.println("Please input a positive value ");
             return inputDuration();
@@ -448,6 +455,7 @@ public class ActivityMenu extends Menu {
         System.out.println("At what minute does the activity take place? ");
         String input = getInput();
         int i = inputToInt(input);
+
         if (i < 0 || i > 60) {
             System.out.println("Please input an integer between 0 and 60 ");
             return getMinute();
@@ -462,6 +470,7 @@ public class ActivityMenu extends Menu {
         System.out.println("At what hour does the activity take place? (24H time)");
         String input = getInput();
         int i = inputToInt(input);
+
         if (i < 0 || i > 23) {
             System.out.println("Please input an integer between 0 and 23 ");
             return getHour();

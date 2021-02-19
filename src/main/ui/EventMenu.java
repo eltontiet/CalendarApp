@@ -30,6 +30,7 @@ public class EventMenu extends Menu {
         System.out.println("Input 0 for the calendar events, or choose a schedule");
         listSchedules(calendar);
         input = getInput();
+
         if (input.equals("0")) {
             eventList = calendar.getEvents();
         } else {
@@ -244,10 +245,13 @@ public class EventMenu extends Menu {
     private void confirmEdit(Event event, Event newEvent) {
         System.out.println("\nDo you want to change the event from: ");
         printEvent(event);
+
         System.out.println("to: ");
         printEvent(newEvent);
+
         System.out.println("(y/n)");
         String command = getInput();
+
         if (command.equals("y")) {
             event.setEvent(newEvent);
             System.out.println("Success");
@@ -308,8 +312,10 @@ public class EventMenu extends Menu {
     //          and returns it
     private int inputDuration() {
         System.out.println("How long is the event in minutes? (0 for no time)");
+
         String input = getInput();
         int duration = inputToInt(input);
+
         if (duration < 0) {
             System.out.println("Please input a positive value ");
             return inputDuration();
@@ -330,8 +336,10 @@ public class EventMenu extends Menu {
     //          the event takes place
     private int getMinute() {
         System.out.println("At what minute does the event take place? ");
+
         String input = getInput();
         int i = inputToInt(input);
+
         if (i < 0 || i > 60) {
             System.out.println("Please input an integer between 0 and 60 ");
             return getMinute();
@@ -344,8 +352,10 @@ public class EventMenu extends Menu {
     //          the event takes place
     private int getHour() {
         System.out.println("At what hour does the event take place? (24H time)");
+
         String input = getInput();
         int i = inputToInt(input);
+
         if (i < 0 || i > 23) {
             System.out.println("Please input an integer between 0 and 23 ");
             return getHour();
@@ -416,8 +426,10 @@ public class EventMenu extends Menu {
     // EFFECTS: prompts the user for the name of the event
     private String inputName() {
         String name;
+
         System.out.println("Enter a name: ");
         name = getInput();
+
         return name;
     }
 

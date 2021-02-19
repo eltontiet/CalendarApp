@@ -132,10 +132,46 @@ public class Activity {
     // EFFECTS: sets this activity to be the same as newActivity
     public void setActivity(Activity newActivity) {
         this.name = newActivity.getName();
-        this.dates = newActivity.getDates();
-        this.time = newActivity.getTime();
+        this.dates = duplicateDates(newActivity);
+        this.time = new Time(newActivity.getTime().getHour(), newActivity.getTime().getMinute());
         this.duration = newActivity.getDuration();
-        this.notes = newActivity.getNotes();
-        this.events = newActivity.getEvents();
+        this.notes = duplicateNotes(newActivity);
+        this.events = duplicateEvents(newActivity);
+    }
+
+    // EFFECTS: returns an identical list of dates
+    private List<Date> duplicateDates(Activity newActivity) {
+        List<Date> newDates = new ArrayList<>();
+        Date newDate;
+
+        for (Date d: newActivity.getDates()) {
+            newDate = new Date(d.getYear(), d.getMonth(), d.getDay());
+            newDates.add(newDate);
+        }
+        return newDates;
+    }
+
+    // EFFECTS: returns an identical list of notes
+    private List<Note> duplicateNotes(Activity newActivity) {
+        List<Note> newDates = new ArrayList<>();
+        Note newNote;
+
+        for (Note n: newActivity.getNotes()) {
+            newNote = new Note(n.getTitle(), n.getBody());
+            newDates.add(newNote);
+        }
+        return newDates;
+    }
+
+    // EFFECTS: returns an identical list of events
+    private List<Event> duplicateEvents(Activity newActivity) {
+        List<Event> newEvents = new ArrayList<>();
+        Event newEvent;
+
+        for (Event e: newActivity.getEvents()) {
+            newEvent = new Event(e.getName(), e.getDate(), e.getTime(), e.getDuration());
+            newEvents.add(newEvent);
+        }
+        return newEvents;
     }
 }

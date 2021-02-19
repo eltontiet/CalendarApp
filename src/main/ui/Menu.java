@@ -68,6 +68,7 @@ public abstract class Menu {
     protected Schedule getSchedule(String command, Calendar calendar) {
         List<Schedule> scheduleList = calendar.getSchedules();
         int index;
+
         try {
             index = Integer.parseInt(command) - 1;
             if (index < scheduleList.size() && !(index < 0)) {
@@ -93,6 +94,7 @@ public abstract class Menu {
     protected void listSchedules(Calendar calendar) {
         List<Schedule> schedules = calendar.getSchedules();
         List<String> list = new ArrayList<>();
+
         for (Schedule schedule : schedules) {
             list.add(schedule.getName());
         }
@@ -103,6 +105,7 @@ public abstract class Menu {
     protected Activity getActivity(String command, Schedule schedule) {
         List<Activity> activityList = schedule.getActivities();
         int index;
+
         try {
             index = Integer.parseInt(command) - 1;
             if (index < activityList.size()) {
@@ -128,6 +131,7 @@ public abstract class Menu {
     protected void listActivities(Schedule schedule) {
         List<Activity> activities = schedule.getActivities();
         List<String> list = new ArrayList<>();
+
         for (Activity activity : activities) {
             list.add(activity.getName());
         }
@@ -139,6 +143,7 @@ public abstract class Menu {
     protected Event getEvent(String command, Activity activity) {
         List<Event> eventList = activity.getEvents();
         int index;
+
         try {
             index = Integer.parseInt(command) - 1;
             if (index < eventList.size()) {
@@ -164,6 +169,7 @@ public abstract class Menu {
     protected Event getEvent(String command, Calendar calendar) {
         List<Event> eventList = calendar.getEvents();
         int index;
+
         try {
             index = Integer.parseInt(command) - 1;
             if (index < eventList.size()) {
@@ -189,9 +195,11 @@ public abstract class Menu {
     protected void listEvents(Calendar calendar) {
         List<Event> events = calendar.getEvents();
         List<String> list = new ArrayList<>();
+
         for (Event event : events) {
             list.add(event.getName());
         }
+
         listItem(list);
     }
 
@@ -200,9 +208,11 @@ public abstract class Menu {
     protected void listEvents(Activity activity) {
         List<Event> events = activity.getEvents();
         List<String> list = new ArrayList<>();
+
         for (Event event : events) {
             list.add(event.getName());
         }
+
         listItem(list);
     }
 
@@ -211,6 +221,7 @@ public abstract class Menu {
         System.out.println("\t" + event.getName());
         System.out.println("\t" + event.getDate().getDate());
         System.out.println("\t" + event.getTime().get12HTime());
+
         if (event.getDuration() != 0) {
             System.out.println("\tFor " + event.getDuration() + " minutes");
         }
@@ -234,7 +245,7 @@ public abstract class Menu {
         System.out.println("\tNotes:");
         for (Note n: activity.getNotes()) {
             System.out.println("\t  Title: " + n.getTitle());
-            System.out.println("\t  Body: " + n.getBody());
+            System.out.println("\t  Body: " + n.getBody() + "\n");
         }
     }
 }

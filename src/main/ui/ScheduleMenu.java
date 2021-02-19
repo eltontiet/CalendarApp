@@ -21,6 +21,7 @@ public class ScheduleMenu extends Menu {
     // EFFECTS: Processes user input
     private void processInput() {
         String command = getInput();
+
         switch (command.toLowerCase()) {
             case "l":
                 listSchedules(calendar);
@@ -49,6 +50,7 @@ public class ScheduleMenu extends Menu {
     @Override
     protected void removeItem() {
         System.out.println("Choose the number of a schedule, or write the name of it");
+
         listSchedules(calendar);
         String command = getInput();
         removeSchedule(command);
@@ -57,6 +59,7 @@ public class ScheduleMenu extends Menu {
     // EFFECTS: removes the schedule from the list
     private void removeSchedule(String command) {
         Schedule schedule = getSchedule(command, calendar);
+
         if ((schedule == null)) {
             goBack();
         } else {
@@ -78,6 +81,7 @@ public class ScheduleMenu extends Menu {
     // EFFECTS: prompts user to edit the schedule
     private void editSchedule(String command) {
         Schedule schedule = getSchedule(command, calendar);
+
         if (schedule == null) {
             goBack();
         } else {
@@ -90,6 +94,7 @@ public class ScheduleMenu extends Menu {
     private void confirmEdit(Schedule schedule, String input) {
         System.out.println("Do you want to change the schedule to: " + input + "? (y/n)");
         String command = getInput();
+
         if (command.equals("y")) {
             schedule.setName(input);
             System.out.println("Success");
@@ -113,6 +118,7 @@ public class ScheduleMenu extends Menu {
     private void confirmSchedule(Schedule schedule) {
         System.out.println("Do you want to make a new schedule: " + schedule.getName() + "? (y/n)");
         String command = getInput();
+
         if (command.equals("y")) {
             calendar.addSchedule(schedule);
             System.out.println("Success");
