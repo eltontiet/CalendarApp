@@ -153,11 +153,51 @@ public class ActivityTest {
     void testSetActivity() {
         Time time = new Time(11,0);
         int duration = 60;
-        Activity testActivity = new Activity("Cpsc 210", time, duration);
+        Activity testActivity = new Activity("CPSC 210", time, duration);
+
+        Note testNote1 = new Note("Hello", "World");
+        Note testNote2 = new Note("CPSC 210", "Rocks!");
+
+        Date testDate1 = new Date(2021, 2, 21);
+        Date testDate2 = new Date(2021, 2, 23);
+
+        Time testTime1 = new Time(8, 0);
+        Time testTime2 = new Time(12, 0);
+
+        Event testEvent1 = new Event("test1", testDate1, testTime1, 60);
+        Event testEvent2 = new Event("test2", testDate2, testTime2, 60);
+
+        testActivity.addNote(testNote1);
+        testActivity.addNote(testNote2);
+        testActivity.addEvent(testEvent1);
+        testActivity.addEvent(testEvent2);
+        testActivity.addDate(testDate1);
+        testActivity.addDate(testDate2);
+
         activity.setActivity(testActivity);
 
-        assertEquals("Cpsc 210", activity.getName());
+        assertEquals("CPSC 210", activity.getName());
         assertEquals("11:00", activity.getTime().get24HTime());
-        assertEquals(0, activity.getDates().size());
+        assertEquals(2, activity.getDates().size());
+        assertFalse(activity == testActivity);
+
+        for (int i = 0; i < testActivity.getDates().size(); i++) {
+            assertEquals(activity.getDates().get(i).getYear(), testActivity.getDates().get(i).getYear());
+            assertEquals(activity.getDates().get(i).getMonth(), testActivity.getDates().get(i).getMonth());
+            assertEquals(activity.getDates().get(i).getDay(), testActivity.getDates().get(i).getDay());
+            assertFalse(activity.getDates().get(i) == testActivity.getDates().get(i));
+        }
+
+        for (int i = 0; i < testActivity.getEvents().size(); i++) {
+            assertEquals(activity.getEvents().get(i).getName(), testActivity.getEvents().get(i).getName());
+            assertEquals(activity.getEvents().get(i).getDuration(), testActivity.getEvents().get(i).getDuration());
+            assertFalse(activity.getEvents().get(i) == testActivity.getEvents().get(i));
+        }
+
+        for (int i = 0; i < testActivity.getNotes().size(); i++) {
+            assertEquals(activity.getNotes().get(i).getTitle(), testActivity.getNotes().get(i).getTitle());
+            assertEquals(activity.getNotes().get(i).getBody(), testActivity.getNotes().get(i).getBody());
+            assertFalse(activity.getNotes().get(i) == testActivity.getNotes().get(i));
+        }
     }
 }

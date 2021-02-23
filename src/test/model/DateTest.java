@@ -100,6 +100,35 @@ class DateTest {
         assertEquals(12, date.getDay());
     }
 
+    @Test
+    void testGetDayOfWeek() {
+        Date date2 = new Date(2020, 12, 26);
+        Date date3 = new Date(2022, 2, 20);
+        Date date4 = new Date(2022, 6, 13);
+        Date date5 = new Date(2022, 5, 10);
+        Date date6 = new Date(2021, 2, 24);
+        Date date7 = new Date(2021, 4, 1);
+
+        assertEquals("Friday", date.getDayOfWeek());
+        assertEquals("Saturday", date2.getDayOfWeek());
+        assertEquals("Sunday", date3.getDayOfWeek());
+        assertEquals("Monday", date4.getDayOfWeek());
+        assertEquals("Tuesday", date5.getDayOfWeek());
+        assertEquals("Wednesday", date6.getDayOfWeek());
+        assertEquals("Thursday", date7.getDayOfWeek());
+    }
+
+    @Test
+    void testIsLeapYear() {
+        Date date2 = new Date(2000, 1, 1);
+        Date date3 = new Date(2004, 2, 3);
+        Date date4 = new Date(2100, 6, 4);
+
+        assertFalse(date.isLeapYear());
+        assertTrue(date2.isLeapYear());
+        assertTrue(date3.isLeapYear());
+        assertFalse(date4.isLeapYear());
+    }
 }
 
 class TimeTest {

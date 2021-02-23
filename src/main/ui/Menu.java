@@ -12,7 +12,7 @@ public abstract class Menu {
     protected Scanner input;
     protected Calendar calendar;
 
-    // initializes input
+    // EFFECTS: initializes input and calendar
     public Menu(Calendar calendar) {
         this.calendar = calendar;
         input = new Scanner(System.in);
@@ -55,13 +55,9 @@ public abstract class Menu {
     }
 
     // TODO: use inputToInt in other methods to reduce duplicated code
-    // EFFECTS: returns the integer value of an input, or -1 if it fails
-    protected Integer inputToInt(String input) {
-        try {
-            return Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+    // EFFECTS: returns the integer value of an input, or throws number format exception
+    protected Integer inputToInt(String input) throws NumberFormatException {
+        return Integer.parseInt(input);
     }
 
     // EFFECTS: gets a schedule based on index or name, or null if doesn't exist
