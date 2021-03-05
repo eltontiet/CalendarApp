@@ -1,13 +1,13 @@
 package model.date;
 
 import exceptions.DayCodeOutOfRangeException;
+import exceptions.PastException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-// TODO: Implement days of the week, and days between two dates
 // Represents a date with a year, month, and day
 public class Date {
     private int year;
@@ -34,7 +34,27 @@ public class Date {
     // EFFECTS: returns number of days in a month
     public int getDaysInMonth() {
         if (monthsWith28Days.contains(month)) {
-            return 28;
+            if (isLeapYear(year)) {
+                return 29;
+            } else {
+                return 28;
+            }
+        } else if (monthsWith30Days.contains(month)) {
+            return 30;
+        } else {
+            return 31;
+        }
+    }
+
+    // REQUIRES: 1 <= month <= 12
+    // EFFECTS: returns number of days in a month
+    public int getDaysInMonth(int month, int year) {
+        if (monthsWith28Days.contains(month)) {
+            if (isLeapYear(year)) {
+                return 29;
+            } else {
+                return 28;
+            }
         } else if (monthsWith30Days.contains(month)) {
             return 30;
         } else {
@@ -90,6 +110,90 @@ public class Date {
         return yearString + "-" + monthString + "-" + dayString;
     }
 
+    // EFFECTS: returns the number of days till date, not including this date.
+    //          if date is at a later date than this, PastException is thrown.
+    public Integer getDaysTill(Date date) throws PastException {
+        Date currentDate = new Date(year, month, day);
+        int daysBetween = 0;
+
+        if (isLater(date, currentDate)) {
+            throw new PastException();
+        }
+
+        if (currentDate.getYear() < date.getYear()) {
+
+            daysBetween += currentDate.getDaysInMonth() - currentDate.getDay();
+
+            for (int i = currentDate.getMonth() + 1; i <= 12; i++) {
+                daysBetween += currentDate.getDaysInMonth(i, currentDate.getYear());
+            }
+
+            currentDate.setYear(currentDate.getYear() + 1);
+            currentDate.setMonth(1);
+            currentDate.setDay(1);
+
+        } else if (currentDate.getMonth() < date.getMonth()) {
+            daysBetween += currentDate.getDaysInMonth() - currentDate.getDay();
+
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            currentDate.setDay(1);
+        }
+
+        daysBetween += currentDate.getDaysBetweenYears(date);
+        currentDate.setYear(date.getYear());
+
+        daysBetween += currentDate.getDaysBetweenMonths(date);
+
+        daysBetween += date.getDay() - currentDate.getDay();
+
+        return daysBetween;
+    }
+
+    // REQUIRES: this and date2 have the same year
+    // EFFECTS: returns the months between the months of the two dates
+    private int getDaysBetweenMonths(Date date2) {
+        int daysBetween = 0;
+
+        for (int i = getMonth(); i < date2.getMonth(); i++) {
+            daysBetween += getDaysInMonth(i, year);
+        }
+
+        return daysBetween;
+    }
+
+    // EFFECTS: returns the days between the years of the two dates
+    private Integer getDaysBetweenYears(Date date2) {
+        int daysBetween = 0;
+
+        for (int i = year; i < date2.getYear(); i++) {
+            if (isLeapYear(i)) {
+                daysBetween += 366;
+            } else {
+                daysBetween += 365;
+            }
+        }
+
+        return daysBetween;
+    }
+
+    // EFFECTS: returns whether date is on a date after currentDate
+    private boolean isLater(Date currentDate, Date date) {
+        int year1 = currentDate.getYear();
+        int year2 = date.getYear();
+        int month1 = currentDate.getMonth();
+        int month2 = date.getMonth();
+        int day1 = currentDate.getDay();
+        int day2 = date.getDay();
+
+        if (year1 > year2) {
+            return false;
+        } else if (year1 == year2 && month1 > month2) {
+            return false;
+        } else {
+            return year1 != year2 || month1 != month2 || day1 <= day2;
+        }
+    }
+
     // This method is based off of the sakamoto method:
     // https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week#Sakamoto's_methods
     // Using this to better understand it:
@@ -106,7 +210,7 @@ public class Date {
         }
 
         int dayCode = year + year / 4 - year / 100 + year / 400 + t.get(month - 1) + day;
-        dayCode = dayCode % 7;
+        dayCode = Math.abs(dayCode) % 7;
 
         return getDayOfWeek(dayCode);
     }
@@ -130,7 +234,7 @@ public class Date {
             case 6:
                 return "Saturday";
             default:
-                throw new DayCodeOutOfRangeException(); //TODO
+                throw new DayCodeOutOfRangeException();
         }
     }
     */
@@ -156,7 +260,7 @@ public class Date {
     }
 
     // EFFECTS: returns whether or not this year is a leap year
-    public Boolean isLeapYear() {
+    public Boolean isLeapYear(int year) {
         return ((year % 4) == 0) && (!((year % 100) == 0) || ((year % 400) == 0));
     }
 }

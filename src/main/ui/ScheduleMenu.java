@@ -152,7 +152,7 @@ public class ScheduleMenu extends Menu {
         System.out.println("\tl to get a list of schedules");
         System.out.println("\tn to make a new schedule");
         System.out.println("\tr to remove a schedule from the calendar");
-        System.out.println("\te to edit a schedule");
+        System.out.println("\te to edit the name of a schedule");
         System.out.println("\tq to get back to main menu");
     }
 }

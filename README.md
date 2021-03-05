@@ -23,6 +23,9 @@ different websites to teach, it is very easy to miss an assignment or lecture.
 - As a user, I want to be able to add activities to my schedule
 - As a user, I want to be able to create notes about those activities
 - As a user, I want to be able to add to-do lists to my activities
+- As a user, I want to be able to save multiple calendars
+- As a user, I want to be able to load different calendars
+- As a user, I want to have my file loaded when I start the application
 
 # Not yet implemented
 - As a user, I want to be able to mark my tasks as complete

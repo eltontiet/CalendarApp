@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.PastException;
 import model.date.Date;
 import model.date.Time;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,9 @@ class DateTest {
 
         date.setMonth(2);
         assertEquals(28, date.getDaysInMonth());
+
+        date.setYear(2020);
+        assertEquals(29, date.getDaysInMonth());
 
         date.setMonth(3);
         assertEquals(31, date.getDaysInMonth());
@@ -51,6 +55,45 @@ class DateTest {
 
         date.setMonth(12);
         assertEquals(31, date.getDaysInMonth());
+    }
+
+    @Test
+    void testGetDaysOfMonthInYear()  {
+        assertEquals(31, date.getDaysInMonth(1,2020));
+
+        date.setMonth(2);
+        assertEquals(29, date.getDaysInMonth(2,2020));
+        assertEquals(28, date.getDaysInMonth(2,2021));
+
+        date.setMonth(3);
+        assertEquals(31, date.getDaysInMonth(3,2020));
+
+        date.setMonth(4);
+        assertEquals(30, date.getDaysInMonth(4,2020));
+
+        date.setMonth(5);
+        assertEquals(31, date.getDaysInMonth(5,2020));
+
+        date.setMonth(6);
+        assertEquals(30, date.getDaysInMonth(6,2020));
+
+        date.setMonth(7);
+        assertEquals(31, date.getDaysInMonth(7,2020));
+
+        date.setMonth(8);
+        assertEquals(31, date.getDaysInMonth(8,2020));
+
+        date.setMonth(9);
+        assertEquals(30, date.getDaysInMonth(9,2020));
+
+        date.setMonth(10);
+        assertEquals(31, date.getDaysInMonth(10,2020));
+
+        date.setMonth(11);
+        assertEquals(30, date.getDaysInMonth(11,2020));
+
+        date.setMonth(12);
+        assertEquals(31, date.getDaysInMonth(12,2020));
     }
 
     @Test
@@ -120,14 +163,45 @@ class DateTest {
 
     @Test
     void testIsLeapYear() {
-        Date date2 = new Date(2000, 1, 1);
-        Date date3 = new Date(2004, 2, 3);
-        Date date4 = new Date(2100, 6, 4);
 
-        assertFalse(date.isLeapYear());
-        assertTrue(date2.isLeapYear());
-        assertTrue(date3.isLeapYear());
-        assertFalse(date4.isLeapYear());
+        assertFalse(date.isLeapYear(date.getYear()));
+        assertTrue(date.isLeapYear(2000));
+        assertTrue(date.isLeapYear(2004));
+        assertFalse(date.isLeapYear(2100));
+    }
+
+    @Test
+    void testGetDaysTill() throws PastException { // TODO
+        Date date2 = new Date(2021,1,15);
+        assertEquals(14, date.getDaysTill(date2));
+
+        date2 = new Date(2025,1,1);
+        assertEquals(1460,date.getDaysTill(date2));
+
+        date2 = new Date(2025,12,1);
+        assertEquals(1794,date.getDaysTill(date2));
+
+        date2 = new Date(2025,12,18);
+        assertEquals(1811,date.getDaysTill(date2));
+
+        date2 = new Date(2021,12,18);
+        assertEquals(350,date.getDaysTill(date2));
+
+        date2 = new Date(2021,2,1);
+        assertEquals(30,date.getDaysTill(date2));
+
+        date2 = new Date(2020,12,18);
+        Date finalDate1 = date2;
+        assertThrows(PastException.class,() -> date.getDaysTill(finalDate1));
+
+        date = new Date(2021,12,31);
+        date2 = new Date(2021,10,31);
+        Date finalDate2 = date2;
+        assertThrows(PastException.class,() -> date.getDaysTill(finalDate2));
+
+        date2 = new Date(2021,12,18);
+        Date finalDate3 = date2;
+        assertThrows(PastException.class,() -> date.getDaysTill(finalDate3));
     }
 }
 
