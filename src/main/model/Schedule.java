@@ -1,12 +1,15 @@
 package model;
 
 import model.date.Date;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // Represents a schedule that has a list of activities, and a name
-public class Schedule {
+public class Schedule implements Writable {
     private String name;
     private List<Activity> activities;
 
@@ -52,5 +55,27 @@ public class Schedule {
     // EFFECTS: removes the activity from the list of this.activities
     public void removeActivity(Activity activity) {
         activities.remove(activity);
+    }
+
+    // EFFECTS: returns this schedule as a JSONObject
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("name", name);
+        json.put("activities", activitiesToJson());
+
+        return json;
+    }
+
+    // EFFECTS: returns activities as a JSONArray
+    private JSONArray activitiesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Activity a: activities) {
+            jsonArray.put(a.toJson());
+        }
+
+        return jsonArray;
     }
 }

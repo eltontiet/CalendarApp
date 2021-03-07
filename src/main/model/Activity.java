@@ -2,13 +2,16 @@ package model;
 
 import model.date.Date;
 import model.date.Time;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // Represents a recurring activity with a name, dates of the activity,
 // time, duration, list of notes, and list of events
-public class Activity {
+public class Activity implements Writable {
     private String name;
     private List<Date> dates;
     private Time time;
@@ -55,7 +58,7 @@ public class Activity {
 
     // EFFECTS: returns the note with title of title, or null
     public Note getNote(String title) {
-        for (Note i:notes) {
+        for (Note i : notes) {
             if (i.getTitle().equals(title)) {
                 return i;
             }
@@ -78,7 +81,7 @@ public class Activity {
 
     // EFFECTS: returns the event with name of name, or null
     public Event getEvent(String name) {
-        for (Event i:events) {
+        for (Event i : events) {
             if (i.getName().equals(name)) {
                 return i;
             }
@@ -144,7 +147,7 @@ public class Activity {
         List<Date> newDates = new ArrayList<>();
         Date newDate;
 
-        for (Date d: newActivity.getDates()) {
+        for (Date d : newActivity.getDates()) {
             newDate = new Date(d.getYear(), d.getMonth(), d.getDay());
             newDates.add(newDate);
         }
@@ -156,7 +159,7 @@ public class Activity {
         List<Note> newDates = new ArrayList<>();
         Note newNote;
 
-        for (Note n: newActivity.getNotes()) {
+        for (Note n : newActivity.getNotes()) {
             newNote = new Note(n.getTitle(), n.getBody());
             newDates.add(newNote);
         }
@@ -168,10 +171,65 @@ public class Activity {
         List<Event> newEvents = new ArrayList<>();
         Event newEvent;
 
-        for (Event e: newActivity.getEvents()) {
+        for (Event e : newActivity.getEvents()) {
             newEvent = new Event(e.getName(), e.getDate(), e.getTime(), e.getDuration());
             newEvents.add(newEvent);
         }
         return newEvents;
+    }
+
+//    private String name;
+//    private List<Date> dates;
+//    private Time time;
+//    private int duration;
+//    private List<Note> notes;
+//    private List<Event> events;
+
+    // EFFECTS: returns this calendar as a JSONObject
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("name", name);
+        json.put("dates", datesToJson());
+        json.put("time", time.get24HTime());
+        json.put("duration", duration);
+        json.put("notes", notesToJson());
+        json.put("events", eventsToJson());
+
+        return json;
+    }
+
+    // EFFECTS: returns events as a JSONArray
+    private JSONArray eventsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Event e : events) {
+            jsonArray.put(e.toJson());
+        }
+
+        return jsonArray;
+    }
+
+    // EFFECTS: returns notes as a JSONArray
+    private JSONArray notesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Note n : notes) {
+            jsonArray.put(n.toJson());
+        }
+
+        return jsonArray;
+    }
+
+    // EFFECTS: returns dates as a JSONArray
+    private JSONArray datesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Date d : dates) {
+            jsonArray.put(d.toJson());
+        }
+
+        return jsonArray;
     }
 }

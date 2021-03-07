@@ -1,22 +1,22 @@
 package model.date;
 
-import exceptions.DayCodeOutOfRangeException;
-import exceptions.PastException;
+import exceptions.*;
+import org.json.JSONObject;
+import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 // Represents a date with a year, month, and day
-public class Date {
+public class Date implements Writable {
     private int year;
     private int month;
     private int day;
 
-    private final List<Integer> monthsWith28Days = new ArrayList<>(Collections.singletonList(2));
-    private final List<Integer> monthsWith30Days = new ArrayList<>(Arrays.asList(4, 6, 9, 11));
-    private final List<Integer> monthsWith31Days = new ArrayList<>(Arrays.asList(1, 3, 5, 7, 8, 10, 12));
+    private static final int FEBRUARY = 2;
+    private static final List<Integer> MONTHS_WITH_30_DAYS = new ArrayList<>(Arrays.asList(4, 6, 9, 11));
+    //private static final List<Integer> monthsWith31Days = new ArrayList<>(Arrays.asList(1, 3, 5, 7, 8, 10, 12));
 
 
     // REQUIRES: year >= 0, 1 <= month <= 12, 1 <= day <= getDaysInMonth()
@@ -29,17 +29,23 @@ public class Date {
         this.day = day;
     }
 
+    // EFFECTS: If dateString is in form yyyy-mm-dd, and is a legal date,
+    //          sets date from dateString; otherwise throws a DateException
+    public Date(String dateString) throws DateException {
+        setFromString(dateString);
+    }
+
 
     // REQUIRES: 1 <= month <= 12
     // EFFECTS: returns number of days in a month
     public int getDaysInMonth() {
-        if (monthsWith28Days.contains(month)) {
+        if (FEBRUARY == month) {
             if (isLeapYear(year)) {
                 return 29;
             } else {
                 return 28;
             }
-        } else if (monthsWith30Days.contains(month)) {
+        } else if (MONTHS_WITH_30_DAYS.contains(month)) {
             return 30;
         } else {
             return 31;
@@ -49,13 +55,13 @@ public class Date {
     // REQUIRES: 1 <= month <= 12
     // EFFECTS: returns number of days in a month
     public int getDaysInMonth(int month, int year) {
-        if (monthsWith28Days.contains(month)) {
+        if (FEBRUARY == month) {
             if (isLeapYear(year)) {
                 return 29;
             } else {
                 return 28;
             }
-        } else if (monthsWith30Days.contains(month)) {
+        } else if (MONTHS_WITH_30_DAYS.contains(month)) {
             return 30;
         } else {
             return 31;
@@ -108,6 +114,88 @@ public class Date {
         }
 
         return yearString + "-" + monthString + "-" + dayString;
+    }
+
+    // TODO: Implement setDateFromString();
+    // MODIFIES: this
+    // EFFECTS: if dateString is in form yyyy-mm-dd, sets this date to dateString
+    //          else, throws DateFormatException
+    public void setFromString(String dateString) throws DateException {
+        checkStringFormat(dateString);
+
+        int year = getYearFromString(dateString);
+        int month = getMonthFromString(dateString);
+        int day = getDayFromString(dateString, year, month);
+
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
+
+    // EFFECTS: returns the day from string if dd is a number between 1 and
+    //          daysInMonth(year,month), otherwise throws a DateFormatException
+    //          if day is not a number, or throws DayRangeException if day is outside range
+    private int getDayFromString(String dateString, int year, int month) throws DateFormatException, DayRangeException {
+        int day;
+
+        try {
+            day = Integer.parseInt(dateString.substring(8,10));
+
+        } catch (NumberFormatException e) {
+            throw new DateFormatException();
+        }
+
+        if (!(day > 0 && day < getDaysInMonth(year, month))) {
+            throw new DayRangeException();
+        }
+
+        return day;
+    }
+
+    // EFFECTS: returns the month from string if mm is a number between 1 and
+    //          12. otherwise, throws a DateFormatException if month is not a number,
+    //          or throws MonthRangeException if month is outside range
+    private int getMonthFromString(String dateString) throws DateFormatException, MonthRangeException {
+        int month;
+
+        try {
+            month = Integer.parseInt(dateString.substring(5,7));
+
+        } catch (NumberFormatException e) {
+            throw new DateFormatException();
+        }
+
+        if (!(month > 0 && month <= 12)) {
+            throw new MonthRangeException();
+        }
+
+        return month;
+    }
+
+    // EFFECTS: returns the year from string if yyyy is a number between 1 and 9999,
+    //          otherwise throws a DateFormatException if year is not a number
+    private int getYearFromString(String dateString) throws DateFormatException {
+        int year;
+
+        try {
+            year = Integer.parseInt(dateString.substring(0,4));
+
+        } catch (NumberFormatException e) {
+            throw new DateFormatException();
+        }
+
+        return year;
+    }
+
+    // EFFECTS: throws DateFormatException if string is not in form: yyyy-mm-dd
+    private void checkStringFormat(String dateString) throws DateFormatException {
+        if (!(dateString.length() == 10)) {
+            throw new DateFormatException();
+        }
+
+        if (dateString.charAt(4) != '-' || dateString.charAt(7) != '-') {
+            throw new DateFormatException();
+        }
     }
 
     // EFFECTS: returns the number of days till date, not including this date.
@@ -262,5 +350,15 @@ public class Date {
     // EFFECTS: returns whether or not this year is a leap year
     public Boolean isLeapYear(int year) {
         return ((year % 4) == 0) && (!((year % 100) == 0) || ((year % 400) == 0));
+    }
+
+    // EFFECTS: returns this date as a JSONObject
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("date", getDate());
+
+        return json;
     }
 }

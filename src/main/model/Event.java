@@ -2,9 +2,11 @@ package model;
 
 import model.date.Date;
 import model.date.Time;
+import org.json.JSONObject;
+import persistence.Writable;
 
 // Represents an Event with its name, date, time, and duration
-public class Event {
+public class Event implements Writable {
     private String name;
     private Date date;
     private Time time;
@@ -60,5 +62,18 @@ public class Event {
         this.date = newEvent.getDate();
         this.time = newEvent.getTime();
         this.duration = newEvent.getDuration();
+    }
+
+    // EFFECTS: returns this event into a JSONObject
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("name", name);
+        json.put("date", date.getDate());
+        json.put("time", time.get24HTime());
+        json.put("duration", duration);
+
+        return json;
     }
 }

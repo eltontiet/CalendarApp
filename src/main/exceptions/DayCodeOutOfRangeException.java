@@ -1,4 +1,4 @@
 package exceptions;
 
-public class DayCodeOutOfRangeException extends Exception {
-}
+//public class DayCodeOutOfRangeException extends Exception {
+//}

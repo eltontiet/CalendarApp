@@ -60,6 +60,7 @@ public abstract class Menu {
         return Integer.parseInt(input);
     }
 
+    // TODO After learning overriding hashmaps and equals, is there an easier way to implement this?
     // EFFECTS: gets a schedule based on index or name, or null if doesn't exist
     protected Schedule getSchedule(String command, Calendar calendar) {
         List<Schedule> scheduleList = calendar.getSchedules();

@@ -390,7 +390,6 @@ public class ActivityMenu extends Menu {
         List<Date> dates;
         Time time;
         int duration;
-        Note note;
 
         name = inputName();
 
@@ -400,14 +399,12 @@ public class ActivityMenu extends Menu {
 
         duration = inputDuration();
 
-        note = inputNote();
-
         Activity activity = new Activity(name, time, duration);
 
         for (Date d: dates) {
             activity.addDate(d);
         }
-        activity.addNote(note);
+
         return activity;
     }
 

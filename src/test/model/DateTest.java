@@ -1,6 +1,6 @@
 package model;
 
-import exceptions.PastException;
+import exceptions.*;
 import model.date.Date;
 import model.date.Time;
 import org.junit.jupiter.api.BeforeEach;
@@ -203,6 +203,164 @@ class DateTest {
         Date finalDate3 = date2;
         assertThrows(PastException.class,() -> date.getDaysTill(finalDate3));
     }
+
+    @Test
+    void TestBadStringSetDateFromString() {
+        try {
+            date.setFromString("This is illegal");
+            fail("This should fail");
+        } catch (DateFormatException e) {
+            // pass
+        } catch (DateException e) {
+            fail("Throwing wrong error");
+        }
+    }
+
+    @Test
+    void TestBadYearStringSetDateFromString() {
+        try {
+            date.setFromString("20a2-01-01");
+            fail("This should fail");
+        } catch (DateFormatException e) {
+            // pass
+        } catch (DateException e) {
+            fail("Throwing wrong error");
+        }
+    }
+
+    @Test
+    void TestBadMonthStringSetDateFromString() {
+        try {
+            date.setFromString("2022-r1-01");
+            fail("This should fail");
+        } catch (DateFormatException e) {
+            // pass
+        } catch (DateException e) {
+            fail("Throwing wrong error");
+        }
+    }
+
+    @Test
+    void TestBadDayStringSetDateFromString() {
+        try {
+            date.setFromString("2022-01-0r");
+            fail("This should fail");
+        } catch (DateFormatException e) {
+            // pass
+        } catch (DateException e) {
+            fail("Throwing wrong error");
+        }
+    }
+
+    @Test
+    void TestMissingFirstDashSetDateFromString() {
+        try {
+            date.setFromString("2022201-02");
+            fail("This should fail");
+        } catch (DateFormatException e) {
+            // pass
+        } catch (DateException e) {
+            fail("Throwing wrong error");
+        }
+    }
+
+    @Test
+    void TestMissingSecondDashSetDateFromString() {
+        try {
+            date.setFromString("2022-01302");
+            fail("This should fail");
+        } catch (DateFormatException e) {
+            // pass
+        } catch (DateException e) {
+            fail("Throwing wrong error");
+        }
+    }
+
+    @Test
+    void TestBigMonthSetDateFromString() {
+        try {
+            date.setFromString("2022-13-02");
+
+            fail("Should throw an error");
+        } catch (MonthRangeException e) {
+            // pass
+        } catch (DateException e) {
+            fail("Throwing wrong error");
+        }
+    }
+
+    @Test
+    void TestZeroMonthSetDateFromString() {
+        try {
+            date.setFromString("2022-00-02");
+
+            fail("Should throw an error");
+        } catch (MonthRangeException e) {
+            // pass
+        } catch (DateException e) {
+            fail("Throwing wrong error");
+        }
+    }
+
+    @Test
+    void TestBigDaySetDateFromString() {
+        try {
+            date.setFromString("2022-01-32");
+
+            fail("Should throw error");
+        } catch (DayRangeException e) {
+            // pass
+        } catch (DateException e) {
+            fail("Throwing wrong error");
+        }
+    }
+
+    @Test
+    void TestZeroDaySetDateFromString() {
+        try {
+            date.setFromString("2022-01-00");
+
+            fail("Should throw error");
+        } catch (DayRangeException e) {
+            // pass
+        } catch (DateException e) {
+            fail("Throwing wrong error");
+        }
+    }
+
+    @Test
+    void TestBadFebruaryDaySetDateFromString() {
+        try {
+            date.setFromString("2022-02-29");
+        } catch (DayRangeException e) {
+            // pass
+        } catch (DateException e) {
+            fail("Throwing wrong error");
+        }
+    }
+
+    @Test
+    void TestSetDateFromString() {
+        try {
+            date.setFromString("2022-01-02");
+            assertEquals(date.getYear(), 2022);
+            assertEquals(date.getMonth(), 1);
+            assertEquals(date.getDay(), 2);
+
+            date.setFromString("0199-11-22");
+            assertEquals(date.getYear(), 199);
+            assertEquals(date.getMonth(), 11);
+            assertEquals(date.getDay(), 22);
+
+            date.setFromString("2020-02-29");
+            assertEquals(date.getYear(), 2020);
+            assertEquals(date.getMonth(), 2);
+            assertEquals(date.getDay(), 29);
+
+        } catch (DateException e) {
+            fail("No error should be thrown");
+        }
+    }
 }
 
 class TimeTest {
@@ -235,7 +393,7 @@ class TimeTest {
         assertEquals("23:08", time1.get24HTime());
         assertEquals("13:31", time2.get24HTime());
         assertEquals("12:00", time3.get24HTime());
-        assertEquals("0:00", time4.get24HTime());
+        assertEquals("00:00", time4.get24HTime());
         assertEquals("11:45", time5.get24HTime());
     }
 
@@ -267,5 +425,95 @@ class TimeTest {
     void testSetMinute() {
         time1.setMinute(30);
         assertEquals(30, time1.getMinute());
+    }
+
+    @Test
+    void testSetTimeFrom24H() {
+        try {
+            time1.setTimeFrom24H("12:20");
+            assertEquals("12:20", time1.get24HTime());
+        } catch (BadTimeFormattingException e) {
+            fail("Should work");
+        }
+    }
+
+    @Test
+    void testBadFormatSetTimeFrom24H() {
+        try {
+            time1.setTimeFrom24H("This is a very bad time");
+            fail("Should throw an exception");
+        } catch (BadTimeFormattingException e) {
+            // pass
+        }
+    }
+
+    @Test
+    void testNoColonSetTimeFrom24H() {
+        try {
+            time1.setTimeFrom24H("12525");
+            fail("Should throw an exception");
+        } catch (BadTimeFormattingException e) {
+            // pass
+        }
+    }
+
+    @Test
+    void testBigHourSetTimeFrom24H() {
+        try {
+            time1.setTimeFrom24H("24:25");
+            fail("Should throw an exception");
+        } catch (BadTimeFormattingException e) {
+            // pass
+        }
+    }
+
+    @Test
+    void testNegativeHourSetTimeFrom24H() {
+        try {
+            time1.setTimeFrom24H("-1:25");
+            fail("Should throw an exception");
+        } catch (BadTimeFormattingException e) {
+            // pass
+        }
+    }
+
+    @Test
+    void testBadHourSetTimeFrom24H() {
+        try {
+            time1.setTimeFrom24H("1r:25");
+            fail("Should throw an exception");
+        } catch (BadTimeFormattingException e) {
+            // pass
+        }
+    }
+
+    @Test
+    void testBigMinuteSetTimeFrom24H() {
+        try {
+            time1.setTimeFrom24H("16:60");
+            fail("Should throw an exception");
+        } catch (BadTimeFormattingException e) {
+            // pass
+        }
+    }
+
+    @Test
+    void testNegativeMinuteSetTimeFrom24H() {
+        try {
+            time1.setTimeFrom24H("12:-5");
+            fail("Should throw an exception");
+        } catch (BadTimeFormattingException e) {
+            // pass
+        }
+    }
+
+    @Test
+    void testBadMinuteSetTimeFrom24H() {
+        try {
+            time1.setTimeFrom24H("16:5r");
+            fail("Should throw an exception");
+        } catch (BadTimeFormattingException e) {
+            // pass
+        }
     }
 }

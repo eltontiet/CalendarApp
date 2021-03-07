@@ -1,0 +1,10 @@
+{
+  "schedules": [],
+  "name": "Test",
+  "events": [{
+    "date": "2021-03-07",
+    "duration": 0,
+    "name": "",
+    "time": "2r:00"
+  }]
+}

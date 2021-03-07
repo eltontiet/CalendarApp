@@ -2,8 +2,11 @@ package ui;
 
 import model.*;
 import model.date.Date;
-import model.date.Time;
+import persistence.CalendarReader;
+import persistence.CalendarWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,8 +16,13 @@ Based off of TellerApp to understand how to get user input, and set it up.
 
 // An organization app
 public class OrganizationApp {
+    private static final String DEFAULT_JSON_LOCATION = "./data/calendarSave.json";
+
     private Calendar calendar;
     private Scanner input;
+    private CalendarReader calendarReader;
+    private CalendarWriter calendarWriter;
+    private String jsonStore;
 
     // EFFECTS: starts the application
     public OrganizationApp() {
@@ -31,40 +39,75 @@ public class OrganizationApp {
 
         while (!quit) {
             displayMenu();
-            command = input.next();
-            command = command.toLowerCase();
 
-            if (command.equals("q")) {
-                quit = true;
-            } else {
-                chooseNext(command);
+            command = getInput();
+
+            switch (command) {
+                case "q":
+                    quit = true;
+                    break;
+                case "v":
+                    viewCalendar();
+                    break;
+                case "save":
+                    saveCalendar();
+                    break;
+                default:
+                    chooseNext(command);
             }
         }
+    }
+
+    // EFFECTS: returns the next input that the user inputs
+    private String getInput() {
+
+        if (input.hasNext()) {
+            return input.nextLine();
+        }
+
+        return getInput();
     }
 
     // MODIFIES: this
     // EFFECTS: initializes calendar
     private void init() {
-        Schedule schedule;
-        Activity activity;
+        // TODO: get jsonStore from config
+        jsonStore = DEFAULT_JSON_LOCATION;
+        try {
+            calendarReader = new CalendarReader(jsonStore);
 
-        calendar = new Calendar("My Calendar");
-        schedule = new Schedule("Beginner Schedule");
-        activity = new Activity("Beginner Activity",new Time(0,0),0);
+            calendar = calendarReader.read();
 
-        schedule.addActivity(activity);
-        calendar.addSchedule(schedule);
-        input = new Scanner(System.in);
+            System.out.println("Started up with Calendar: " + calendar.getName());
+
+        } catch (IOException e) {
+            System.out.println(jsonStore + " could not be read, trying " + DEFAULT_JSON_LOCATION);
+            jsonStore = DEFAULT_JSON_LOCATION;
+
+            try {
+                calendarReader = new CalendarReader(jsonStore);
+                calendar = calendarReader.read();
+
+                System.out.println("Success!");
+
+            } catch (IOException ioe) {
+                System.out.println("Could not load files, quitting...");
+                System.exit(0);
+            }
+        } finally {
+            calendarWriter = new CalendarWriter(jsonStore);
+            input = new Scanner(System.in);
+        }
     }
 
     // EFFECTS: decides what to do with the input
     private void chooseNext(String command) {
         switch (command) {
-            case "c":
-                new CalendarMenu(calendar);
-                break;
             case "s":
                 new ScheduleMenu(calendar);
+                break;
+            case "c":
+                new CalendarMenu(calendar);
                 break;
             case "a":
                 new ActivityMenu(calendar);
@@ -72,12 +115,48 @@ public class OrganizationApp {
             case "e":
                 new EventMenu(calendar);
                 break;
-            case "v":
-                viewCalendar();
+            case "load":
+                loadCalendar();
                 break;
             default:
                 System.out.println("Please select a valid option.");
                 break;
+        }
+    }
+
+    // EFFECTS: asks user for a calendar to load, and loads it
+    private void loadCalendar() {
+        // System.out.println("Choose a calendar to load: ");
+        // getInput()
+
+        try {
+            calendar = calendarReader.read();
+
+            System.out.println("Successfully loaded file: " + jsonStore);
+
+        } catch (IOException e) {
+            System.out.println("Could not load file, reverting back");
+
+            // TODO: do something else here
+            CalendarWriter writer = new CalendarWriter("./data/calendarSave.json");
+            writer.write(new Calendar("Starting Calendar"));
+            writer.close();
+        }
+
+        // TODO: load input here...
+    }
+
+    // EFFECTS: saves the calendar to file
+    private void saveCalendar() {
+        try {
+            calendarWriter.open();
+            calendarWriter.write(calendar);
+            calendarWriter.close();
+
+            System.out.println("Successfully saved file to: " + jsonStore);
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file at: " + jsonStore);
         }
     }
 
@@ -89,6 +168,8 @@ public class OrganizationApp {
             System.out.println("Schedule: " + i.getName());
             printActivities(i);
         }
+
+        printEvents(calendar.getEvents());
     }
 
     // EFFECTS: outputs activities in schedule, and all notes
@@ -142,11 +223,13 @@ public class OrganizationApp {
     // EFFECTS: outputs options to the user
     private void displayMenu() {
         System.out.println("\nChoose an option:");
-        System.out.println("\tv to view calendar (Not yet implemented)");
-        System.out.println("\tc to overview calendar (Not yet implemented)");
+        System.out.println("\tv to view calendar");
+        System.out.println("\tc to edit calendars, or make a new one (Not yet implemented)");
         System.out.println("\ts to view schedule");
         System.out.println("\ta to view activities");
         System.out.println("\te to view events");
+        System.out.println("\tsave to save");
+        System.out.println("\tload to load");
         System.out.println("\tq to quit");
     }
 }

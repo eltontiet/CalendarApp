@@ -1,0 +1,94 @@
+{
+  "schedules": [
+    {
+      "activities": [
+        {
+          "duration": 60,
+          "notes": [
+            {
+              "title": "Project",
+              "body": "Do your project every day!"
+            },
+            {
+              "title": "Project (Seriously)",
+              "body": "You will regret procrastinating it"
+            }
+          ],
+          "name": "CPSC 210",
+          "dates": [
+            {"date": "2021-03-08"},
+            {"date": "2021-03-10"},
+            {"date": "2021-03-12"}
+          ],
+          "time": "11:00",
+          "events": [
+            {
+              "date": "2021-03-07",
+              "duration": 0,
+              "name": "Project Phase 2",
+              "time": "20:00"
+            },
+            {
+              "date": "2021-03-24",
+              "duration": 60,
+              "name": "ITE 2",
+              "time": "19:30"
+            }
+          ]
+        },
+        {
+          "duration": 60,
+          "notes": [],
+          "name": "CPSC 121",
+          "dates": [
+            {"date": "2021-03-08"},
+            {"date": "2021-03-10"},
+            {"date": "2021-03-12"}
+          ],
+          "time": "10:00",
+          "events": []
+        }
+      ],
+      "name": "Term 2"
+    },
+    {
+      "activities": [{
+        "duration": 90,
+        "notes": [
+          {
+            "title": "Natural Recursion",
+            "body": "Always trust the natural recursion!"
+          },
+          {
+            "title": "Cows",
+            "body": "Cows are docile creatures, unlike cats!"
+          }
+        ],
+        "name": "CPSC 110",
+        "dates": [
+          {"date": "2020-10-07"},
+          {"date": "2021-10-09"},
+          {"date": "2021-10-14"}
+        ],
+        "time": "15:00",
+        "events": []
+      }],
+      "name": "Term 1"
+    }
+  ],
+  "name": "Test",
+  "events": [
+    {
+      "date": "2021-03-07",
+      "duration": 0,
+      "name": "Holiday",
+      "time": "00:00"
+    },
+    {
+      "date": "2021-03-09",
+      "duration": 300,
+      "name": "Coding!",
+      "time": "15:00"
+    }
+  ]
+}

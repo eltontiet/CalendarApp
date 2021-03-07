@@ -1,7 +1,10 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 // Represents a note with a title and body
-public class Note {
+public class Note implements Writable {
     private String title;
     private String body;
 
@@ -31,5 +34,16 @@ public class Note {
     // EFFECTS: edits this.title to be title
     public void editBody(String body) {
         this.body = body;
+    }
+
+    // EFFECTS: returns this note as a JSONObject
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("title", title);
+        json.put("body", body);
+
+        return json;
     }
 }

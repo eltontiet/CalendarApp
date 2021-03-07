@@ -1,10 +1,14 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 // Represents a calendar with a name, a list of schedules, and a list of events
-public class Calendar {
+public class Calendar implements Writable {
     private String name;
     private List<Schedule> schedules;
     private List<Event> events;
@@ -78,5 +82,40 @@ public class Calendar {
     // EFFECTS: removes the event from the list of this.events
     public void removeEvent(Event event) {
         events.remove(event);
+    }
+
+    // EFFECTS: returns this calendar as a JSONObject
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("name", name);
+        json.put("schedules", schedulesToJson());
+        json.put("events", eventsToJson());
+
+        return json;
+    }
+
+    // TODO: duplication in activity and calendar
+    // EFFECTS: returns events as a JSONArray
+    private JSONArray eventsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Event e:events) {
+            jsonArray.put(e.toJson());
+        }
+
+        return jsonArray;
+    }
+
+    // EFFECTS: returns schedules as a JSONArray
+    private JSONArray schedulesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Schedule s:schedules) {
+            jsonArray.put(s.toJson());
+        }
+
+        return jsonArray;
     }
 }
