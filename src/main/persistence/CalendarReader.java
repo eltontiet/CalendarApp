@@ -17,13 +17,11 @@ import java.util.stream.Stream;
 
 // Based off of the JsonSerializationDemo
 // Represents a reader that reads Calendar from JSON data stored in a file
-public class CalendarReader {
-
-    private String source;
+public class CalendarReader extends JsonReader {
 
     // EFFECTS: constructs a reader to read from a source file
     public CalendarReader(String source) {
-        this.source = source;
+        super(source);
     }
 
     // EFFECTS: reads calendar from file and returns it;
@@ -32,17 +30,6 @@ public class CalendarReader {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
         return parseCalendar(jsonObject);
-    }
-
-    // EFFECTS: reads source file as string and returns it
-    private String readFile(String source) throws IOException {
-        StringBuilder contentBuilder = new StringBuilder();
-
-        try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
-            stream.forEach(s -> contentBuilder.append(s));
-        }
-
-        return  contentBuilder.toString();
     }
 
     // EFFECTS: parses calendar from JSON object and returns it

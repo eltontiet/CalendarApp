@@ -2,12 +2,17 @@ package ui;
 
 import model.*;
 import model.date.Date;
+import netscape.javascript.JSException;
+import org.json.JSONException;
 import persistence.CalendarReader;
 import persistence.CalendarWriter;
+import persistence.ConfigReader;
+import persistence.ConfigWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /*
@@ -16,13 +21,13 @@ Based off of TellerApp to understand how to get user input, and set it up.
 
 // An organization app
 public class OrganizationApp {
-    private static final String DEFAULT_JSON_LOCATION = "./data/calendarSave.json";
-
     private Calendar calendar;
     private Scanner input;
     private CalendarReader calendarReader;
     private CalendarWriter calendarWriter;
+    private ConfigReader configReader;
     private String jsonStore;
+    private Config config;
 
     // EFFECTS: starts the application
     public OrganizationApp() {
@@ -46,8 +51,8 @@ public class OrganizationApp {
                 case "q":
                     quit = true;
                     break;
-                case "v":
-                    viewCalendar();
+                case "load":
+                    loadCalendar();
                     break;
                 case "save":
                     saveCalendar();
@@ -71,8 +76,8 @@ public class OrganizationApp {
     // MODIFIES: this
     // EFFECTS: initializes calendar
     private void init() {
-        // TODO: get jsonStore from config
-        jsonStore = DEFAULT_JSON_LOCATION;
+        initConfig();
+        jsonStore = config.getCurrentFile();
         try {
             calendarReader = new CalendarReader(jsonStore);
 
@@ -80,9 +85,9 @@ public class OrganizationApp {
 
             System.out.println("Started up with Calendar: " + calendar.getName());
 
-        } catch (IOException e) {
-            System.out.println(jsonStore + " could not be read, trying " + DEFAULT_JSON_LOCATION);
-            jsonStore = DEFAULT_JSON_LOCATION;
+        } catch (JSONException | IOException e) {
+            System.out.println(jsonStore + " could not be read, trying " + Config.DEFAULT_SAVE_LOCATION);
+            jsonStore = Config.DEFAULT_SAVE_LOCATION;
 
             try {
                 calendarReader = new CalendarReader(jsonStore);
@@ -100,6 +105,19 @@ public class OrganizationApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes config file
+    private void initConfig() {
+        try {
+            configReader = new ConfigReader(Config.CONFIG_FILE_LOCATION);
+            config = configReader.read();
+        } catch (IOException | JSONException e) {
+            System.out.println("Config file could not be read, resetting to default values");
+            config = new Config();
+            config.setup();
+        }
+    }
+
     // EFFECTS: decides what to do with the input
     private void chooseNext(String command) {
         switch (command) {
@@ -107,7 +125,8 @@ public class OrganizationApp {
                 new ScheduleMenu(calendar);
                 break;
             case "c":
-                new CalendarMenu(calendar);
+                new CalendarMenu(calendar, config);
+                load(config.getCurrentFile());
                 break;
             case "a":
                 new ActivityMenu(calendar);
@@ -115,8 +134,8 @@ public class OrganizationApp {
             case "e":
                 new EventMenu(calendar);
                 break;
-            case "load":
-                loadCalendar();
+            case "v":
+                viewCalendar();
                 break;
             default:
                 System.out.println("Please select a valid option.");
@@ -126,24 +145,49 @@ public class OrganizationApp {
 
     // EFFECTS: asks user for a calendar to load, and loads it
     private void loadCalendar() {
-        // System.out.println("Choose a calendar to load: ");
-        // getInput()
+        System.out.println("Choose a calendar to load: ");
 
+        listCalendars();
+
+        String command = getInput();
+
+        String fileLocation = parseLoadCommand(command);
+
+        load(fileLocation);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads calendar at fileLocation
+    private void load(String fileLocation) {
         try {
+            calendarReader = new CalendarReader(fileLocation);
             calendar = calendarReader.read();
 
-            System.out.println("Successfully loaded file: " + jsonStore);
+            jsonStore = fileLocation;
+
+            System.out.println("Successfully loaded calendar: " + calendar.getName());
 
         } catch (IOException e) {
             System.out.println("Could not load file, reverting back");
-
-            // TODO: do something else here
-            CalendarWriter writer = new CalendarWriter("./data/calendarSave.json");
-            writer.write(new Calendar("Starting Calendar"));
-            writer.close();
         }
+    }
 
-        // TODO: load input here...
+    // EFFECTS: returns the calendar of command, or prompts user for a new input
+    private String parseLoadCommand(String command) {
+        try {
+            return config.getFileLocation(command);
+        } catch (FileNotFoundException e) {
+            System.out.println("Please input a valid calendar");
+            return parseLoadCommand(getInput());
+        }
+    }
+
+    // EFFECTS: lists all calendars known to the app
+    private void listCalendars() {
+        System.out.println("Calendars: ");
+        for (String string: config.getFiles().keySet()) {
+            System.out.println("\t" + string + "\n");
+        }
     }
 
     // EFFECTS: saves the calendar to file
@@ -164,8 +208,10 @@ public class OrganizationApp {
     // EFFECTS: outputs everything scheduled in
     //          current calendar based on activity.
     private void viewCalendar() {
+        System.out.println(calendar.getName() + ":");
+
         for (Schedule i: calendar.getSchedules()) {
-            System.out.println("Schedule: " + i.getName());
+            System.out.println(" Schedule: " + i.getName());
             printActivities(i);
         }
 

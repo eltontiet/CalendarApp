@@ -1,0 +1,17 @@
+{
+    "files": [
+        {
+            "name": "Default Calendar",
+            "fileLocation": "./data/calendarSave.json"
+        },
+        {
+            "name": "University",
+            "fileLocation": "./data/university.json"
+        },
+        {
+            "name": "Free time",
+            "fileLocation": "./data/freeTime.json"
+        }
+    ],
+    "currentFile": "./data/freeTime.json"
+}

@@ -1,0 +1,13 @@
+{
+    "files": [
+        {
+            "name": "Test Reader General Calendar",
+            "fileLocation": "./data/testReaderGeneralCalendar.json"
+        },
+        {
+            "name": "Test2",
+            "fileLocation": "./data/test2Calendar.json"
+        }
+    ],
+    "currentFile": "./data/testReaderGeneralCalendar.json"
+}

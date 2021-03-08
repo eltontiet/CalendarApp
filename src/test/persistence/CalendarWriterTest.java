@@ -28,12 +28,12 @@ public class CalendarWriterTest extends JsonTest {
     void testWriterEmptyFile() {
         try {
             Calendar c = new Calendar("Test");
-            CalendarWriter writer = new CalendarWriter("./data/testWriterEmptyFile.json");
+            CalendarWriter writer = new CalendarWriter("./data/testCalendarWriterEmptyFile.json");
             writer.open();
             writer.write(c);
             writer.close();
 
-            CalendarReader jsonReader = new CalendarReader("./data/testWriterEmptyFile.json");
+            CalendarReader jsonReader = new CalendarReader("./data/testCalendarWriterEmptyFile.json");
             c = jsonReader.read();
 
             assertEquals("Test", c.getName());

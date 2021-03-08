@@ -26,7 +26,7 @@ public class CalendarReaderTest extends JsonTest {
 
     @Test
     void testReaderEmptyCalendar() {
-        CalendarReader reader = new CalendarReader("./data/testReaderEmptyFile.json");
+        CalendarReader reader = new CalendarReader("./data/testCalendarReaderEmptyFile.json");
         try {
             Calendar c = reader.read();
             assertEquals("Test", c.getName());

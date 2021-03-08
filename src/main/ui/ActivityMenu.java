@@ -14,9 +14,13 @@ public class ActivityMenu extends Menu {
     // EFFECTS: Initializes calendar and activity menu
     public ActivityMenu(Calendar calendar) {
         super(calendar);
-        getActivityList();
-        printMenu();
-        processInput();
+        if (calendar.getSchedules().size() != 0) {
+            getActivityList();
+            printMenu();
+            processInput();
+        } else {
+            System.out.println("Please make a schedule first");
+        }
     }
 
     // MODIFIES: this
@@ -358,7 +362,7 @@ public class ActivityMenu extends Menu {
     // EFFECTS: Asks user for confirmation about the new activity
     private void confirmActivity(Activity activity) {
         System.out.println("\nDo you want to make a new activity: ");
-        System.out.println("\t" + activity.getName());
+        printActivity(activity);
         System.out.println("(y/n)");
 
         String command = getInput();
