@@ -56,8 +56,13 @@ public abstract class Menu {
 
     // TODO: use inputToInt in other methods to reduce duplicated code
     // EFFECTS: returns the integer value of an input, or throws number format exception
-    protected Integer inputToInt(String input) throws NumberFormatException {
-        return Integer.parseInt(input);
+    protected Integer inputToInt(String input) {
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            System.out.println("Please input a number");
+            return inputToInt(getInput());
+        }
     }
 
     // TODO After learning overriding hashmaps and equals, is there an easier way to implement this?

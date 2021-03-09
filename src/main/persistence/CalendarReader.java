@@ -1,7 +1,6 @@
 package persistence;
 
 import exceptions.DateException;
-import exceptions.DateFormatException;
 import exceptions.BadTimeFormattingException;
 import model.*;
 import model.date.Date;
@@ -10,10 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 // Based off of the JsonSerializationDemo
 // Represents a reader that reads Calendar from JSON data stored in a file

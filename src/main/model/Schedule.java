@@ -1,12 +1,13 @@
 package model;
 
-import model.date.Date;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+// TODO: create an exit for edit and remove commands if none exist (copy from activity's check)
 
 // Represents a schedule that has a list of activities, and a name
 public class Schedule implements Writable {

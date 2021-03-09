@@ -94,7 +94,6 @@ public class Date implements Writable {
         this.day = day;
     }
 
-    // REQUIRES: 1000 <= year <= 9999
     // EFFECTS: returns the date in the form: yyyy-mm-dd
     public String getDate() {
         String yearString = Integer.toString(year);
@@ -113,10 +112,17 @@ public class Date implements Writable {
             dayString = Integer.toString(day);
         }
 
+        if (year < 10) {
+            yearString = "000" + yearString;
+        } else if (year < 100) {
+            yearString = "00" + yearString;
+        } else if (year < 1000) {
+            yearString = "0" + yearString;
+        }
+
         return yearString + "-" + monthString + "-" + dayString;
     }
 
-    // TODO: Implement setDateFromString();
     // MODIFIES: this
     // EFFECTS: if dateString is in form yyyy-mm-dd, sets this date to dateString
     //          else, throws DateFormatException

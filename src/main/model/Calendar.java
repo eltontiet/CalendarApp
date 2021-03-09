@@ -7,6 +7,8 @@ import persistence.Writable;
 import java.util.ArrayList;
 import java.util.List;
 
+// Make sure no duplicates are possible yourself, not by the user
+
 // Represents a calendar with a name, a list of schedules, and a list of events
 public class Calendar implements Writable {
     private String name;

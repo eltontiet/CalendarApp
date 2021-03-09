@@ -267,6 +267,9 @@ public class EventMenu extends Menu {
     private void confirmEvent(Event event) {
         System.out.println("\nDo you want to make a new event: ");
         System.out.println("\t" + event.getName());
+        System.out.println("\t" + event.getDate().getDate());
+        System.out.println("\t" + event.getTime().get12HTime());
+        System.out.println("\t" + event.getDuration() + " minutes");
         System.out.println("(y/n)");
 
         String command = getInput();

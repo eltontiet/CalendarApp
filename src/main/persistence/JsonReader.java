@@ -1,8 +1,5 @@
 package persistence;
 
-import model.Calendar;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -15,6 +12,7 @@ public abstract class JsonReader {
 
     protected String source;
 
+    // EFFECTS: constructs a reader to read at source location
     public JsonReader(String source) {
         this.source = source;
     }

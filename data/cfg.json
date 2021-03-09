@@ -1,6 +1,10 @@
 {
     "files": [
         {
+            "name": "Skrrt Skrrt",
+            "fileLocation": "./data/skrrtSkrrt.json"
+        },
+        {
             "name": "Default Calendar",
             "fileLocation": "./data/calendarSave.json"
         },
@@ -11,7 +15,15 @@
         {
             "name": "Free time",
             "fileLocation": "./data/freeTime.json"
+        },
+        {
+            "name": "Elton Time",
+            "fileLocation": "./data/juicyBoi.json"
+        },
+        {
+            "name": "creating",
+            "fileLocation": "./data/creating.json"
         }
     ],
-    "currentFile": "./data/freeTime.json"
+    "currentFile": "./data/juicyBoi.json"
 }

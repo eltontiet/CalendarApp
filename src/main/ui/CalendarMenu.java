@@ -74,6 +74,7 @@ public class CalendarMenu extends Menu {
         System.out.println("\tq to get back to main menu");
     }
 
+    //TODO
     @Override
     protected void removeItem() {
 
@@ -142,7 +143,7 @@ public class CalendarMenu extends Menu {
 
             System.out.println("Now editing: " + calendar.getName());
         } else if (command.equals("n")) {
-            // Do nothing
+            System.out.println("Editing cancelled");
         } else {
             System.out.println("Please input a valid command.");
             useNow(calendar, fileName);

@@ -512,6 +512,7 @@ public class ActivityMenu extends Menu {
         System.out.println("What day is the event? ");
 
         String input = getInput();
+
         int i = inputToInt(input);
 
         if (i < 0 || i > maxDays) {

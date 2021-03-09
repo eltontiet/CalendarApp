@@ -1,8 +1,5 @@
 package persistence;
 
-import model.Config;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -16,7 +13,6 @@ public abstract class JsonWriter {
     protected PrintWriter writer;
     protected String destination;
 
-    // MODIFIES: this
     // EFFECTS: constructs a writer to write to destination
     protected JsonWriter(String destination) {
         this.destination = destination;

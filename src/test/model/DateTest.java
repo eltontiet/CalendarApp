@@ -102,18 +102,20 @@ class DateTest {
         Date date3 = new Date(2002, 12, 26);
         Date date4 = new Date(1815, 12, 10);
         Date date5 = new Date(1996, 1, 23);
-        Date date6 = new Date(1000, 10, 10);
-        Date date7 = new Date(1000, 9, 10);
+        Date date6 = new Date(999, 10, 10);
+        Date date7 = new Date(50, 9, 10);
         Date date8 = new Date(9999, 10, 9);
+        Date date9 = new Date(1, 10, 9);
 
         assertEquals("2021-01-01", date.getDate());
         assertEquals("1970-01-01", date2.getDate());
         assertEquals("2002-12-26", date3.getDate());
         assertEquals("1815-12-10", date4.getDate());
         assertEquals("1996-01-23", date5.getDate());
-        assertEquals("1000-10-10", date6.getDate());
-        assertEquals("1000-09-10", date7.getDate());
+        assertEquals("0999-10-10", date6.getDate());
+        assertEquals("0050-09-10", date7.getDate());
         assertEquals("9999-10-09", date8.getDate());
+        assertEquals("0001-10-09", date9.getDate());
     }
 
     @Test

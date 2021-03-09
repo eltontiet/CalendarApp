@@ -3,10 +3,6 @@ package persistence;
 import model.Calendar;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-
 // Based off of the JsonSerializationDemo
 // Represents a writer that writes the json representation of Calendar to a file
 public class CalendarWriter  extends JsonWriter {

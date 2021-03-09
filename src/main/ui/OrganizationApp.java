@@ -2,17 +2,14 @@ package ui;
 
 import model.*;
 import model.date.Date;
-import netscape.javascript.JSException;
 import org.json.JSONException;
 import persistence.CalendarReader;
 import persistence.CalendarWriter;
 import persistence.ConfigReader;
-import persistence.ConfigWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 /*
@@ -49,7 +46,7 @@ public class OrganizationApp {
 
             switch (command) {
                 case "q":
-                    quit = true;
+                    quit = askQuit();
                     break;
                 case "load":
                     loadCalendar();
@@ -60,6 +57,54 @@ public class OrganizationApp {
                 default:
                     chooseNext(command);
             }
+        }
+    }
+
+    // EFFECTS: prompts user to confirm save and quit, and returns
+    //          true if user wants to quit
+    private boolean askQuit() {
+        System.out.println("Are you sure you want to quit? (y/n)");
+        String command = getInput();
+
+        if (command.equals("y")) {
+            askSave();
+            return true;
+        } else if (command.equals("n")) {
+            return false;
+        } else {
+            System.out.println("Please input a valid command");
+            return askQuit();
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: prompts user to confirm save, and save if user wants to save
+    private void askSave() {
+        System.out.println("Do you want to save? (y/n)");
+        String command = getInput();
+
+        if (command.equals("y")) {
+            saveCalendar();
+        } else if (command.equals("n")) {
+            System.out.println("Are you sure? (y/n)");
+
+            command = getInput();
+
+            if (command.equals("y")) {
+                System.out.println(calendar.getName() + " was not saved");
+
+            } else if (command.equals("n")) {
+                askSave();
+
+            } else {
+                System.out.println("Please input a valid command");
+
+                askSave();
+            }
+        } else {
+            System.out.println("Please input a valid command");
+
+            askSave();
         }
     }
 
@@ -193,6 +238,7 @@ public class OrganizationApp {
     // EFFECTS: saves the calendar to file
     private void saveCalendar() {
         try {
+            calendarWriter = new CalendarWriter(jsonStore);
             calendarWriter.open();
             calendarWriter.write(calendar);
             calendarWriter.close();
@@ -208,10 +254,10 @@ public class OrganizationApp {
     // EFFECTS: outputs everything scheduled in
     //          current calendar based on activity.
     private void viewCalendar() {
-        System.out.println(calendar.getName() + ":");
+        System.out.println("\n" + calendar.getName() + ":");
 
         for (Schedule i: calendar.getSchedules()) {
-            System.out.println(" Schedule: " + i.getName());
+            System.out.println("\nSchedule: " + i.getName());
             printActivities(i);
         }
 
@@ -222,9 +268,9 @@ public class OrganizationApp {
     //          and events related to the activities
     private void printActivities(Schedule schedule) {
         for (Activity i: schedule.getActivities()) {
-            System.out.println("\nActivity: " + i.getName());
+            System.out.println("\n Activity: " + i.getName());
 
-            System.out.println("Duration: " + i.getDuration());
+            System.out.println(" Duration: " + i.getDuration() + " minutes");
 
             printDates(i.getDates());
 
@@ -236,7 +282,7 @@ public class OrganizationApp {
 
     // EFFECTS: prints dates in a list
     private void printDates(List<Date> dates) {
-        System.out.println("On the days: ");
+        System.out.println(" On the days: ");
         for (Date d: dates) {
             System.out.println("\t" + d.getDate());
         }
@@ -247,10 +293,10 @@ public class OrganizationApp {
         System.out.println("\n Events:");
         for (Event e: events) {
             System.out.println("\t" + e.getName() + ":");
-            System.out.println("\t" + e.getDate().toString());
-            System.out.println("\t" + e.getTime().get12HTime());
+            System.out.println("\t\t" + e.getDate().getDate());
+            System.out.println("\t\t" + e.getTime().get12HTime());
             if (e.getDuration() != 0) {
-                System.out.println("\t" + e.getDuration());
+                System.out.println("\t\t" + e.getDuration() + " minutes");
             }
             System.out.println();
         }
@@ -270,7 +316,7 @@ public class OrganizationApp {
     private void displayMenu() {
         System.out.println("\nChoose an option:");
         System.out.println("\tv to view calendar");
-        System.out.println("\tc to edit calendars, or make a new one (Not yet implemented)");
+        System.out.println("\tc to edit calendars, or make a new one");
         System.out.println("\ts to view schedule");
         System.out.println("\ta to view activities");
         System.out.println("\te to view events");
