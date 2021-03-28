@@ -9,6 +9,7 @@ import persistence.ConfigReader;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,6 +26,7 @@ public class OrganizationApp {
     private ConfigReader configReader;
     private String jsonStore;
     private Config config;
+    private Date today;
 
     // EFFECTS: starts the application
     public OrganizationApp() {
@@ -147,7 +149,21 @@ public class OrganizationApp {
         } finally {
             calendarWriter = new CalendarWriter(jsonStore);
             input = new Scanner(System.in);
+            getToday();
         }
+    }
+
+    // Used https://stackoverflow.com/questions/9474121/i-want-to-get-year-month-day-etc-from-java-date-to-compare-with-gregorian-cal/32363174#32363174
+    // to understand Date and LocalDate
+    // EFFECTS: sets today to the system's current date, and prints the date
+    private void getToday() {
+        java.util.Date todayDate = java.util.Calendar.getInstance().getTime();
+        java.time.LocalDate todayLocalDate = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int year = todayLocalDate.getYear();
+        int month = todayLocalDate.getMonthValue();
+        int day = todayLocalDate.getDayOfMonth();
+        today = new Date(year,month,day);
+        System.out.println("\nThe date today is: " + today.getDate());
     }
 
     // MODIFIES: this
@@ -304,7 +320,7 @@ public class OrganizationApp {
 
     // EFFECTS: prints out all notes
     private void printNotes(List<Note> notes) {
-        System.out.println("\n Notes:");
+        System.out.println(" Notes:");
         for (Note n: notes) {
             System.out.println("\t" + n.getTitle());
             System.out.println("\t" + n.getBody());

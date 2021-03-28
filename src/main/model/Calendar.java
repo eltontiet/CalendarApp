@@ -86,6 +86,18 @@ public class Calendar implements Writable {
         events.remove(event);
     }
 
+    // EFFECTS: returns the schedule that contains activity,
+    //          or returns null if activity is not in a schedule
+    public Schedule findActivitySchedule(Activity activity) {
+        for (Schedule schedule: schedules) {
+            if (schedule.getActivities().contains(activity)) {
+                return schedule;
+            }
+        }
+
+        return null;
+    }
+
     // EFFECTS: returns this calendar as a JSONObject
     @Override
     public JSONObject toJson() {

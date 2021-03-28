@@ -5,6 +5,10 @@
             "fileLocation": "./data/skrrtSkrrt.json"
         },
         {
+            "name": "School",
+            "fileLocation": "./data/School.json"
+        },
+        {
             "name": "Default Calendar",
             "fileLocation": "./data/calendarSave.json"
         },
@@ -13,16 +17,8 @@
             "fileLocation": "./data/university.json"
         },
         {
-            "name": "Free time",
-            "fileLocation": "./data/freeTime.json"
-        },
-        {
             "name": "Elton Time",
             "fileLocation": "./data/juicyBoi.json"
-        },
-        {
-            "name": "creating",
-            "fileLocation": "./data/creating.json"
         }
     ],
     "currentFile": "./data/juicyBoi.json"

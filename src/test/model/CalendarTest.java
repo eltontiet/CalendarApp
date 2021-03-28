@@ -65,7 +65,7 @@ public class CalendarTest {
         assertEquals(testSchedule1, calendar.getSchedule("School"));
         assertEquals(testSchedule3, calendar.getSchedule("Work?"));
         assertEquals(testSchedule2, calendar.getSchedule("Free Time"));
-        assertEquals(null, calendar.getSchedule("Graduation"));
+        assertNull(calendar.getSchedule("Graduation"));
     }
 
     @Test
@@ -81,7 +81,7 @@ public class CalendarTest {
         assertEquals(testEvent1, calendar.getEvent("Project Phase 1"));
         assertEquals(testEvent3, calendar.getEvent("Midterm 2"));
         assertEquals(testEvent2, calendar.getEvent("Midterm 1"));
-        assertEquals(null, calendar.getEvent("Midterm 3"));
+        assertNull(calendar.getEvent("Midterm 3"));
     }
 
     @Test
@@ -128,5 +128,30 @@ public class CalendarTest {
         assertFalse(calendar.getEvents().contains(testEvent2));
         assertTrue(calendar.getEvents().contains(testEvent3));
         assertEquals(2, calendar.getEvents().size());
+    }
+
+    @Test
+    void testFindActivitySchedule() {
+        Schedule testSchedule1 = new Schedule("School");
+        Schedule testSchedule2 = new Schedule("Free Time");
+        Schedule testSchedule3 = new Schedule("Work?");
+
+        Activity testActivity1 = new Activity("CPSC 210", new Time(11,0),60);
+        Activity testActivity2 = new Activity("Gaming", new Time(15,0),30);
+        Activity testActivity3 = new Activity("Applications", new Time(15,30),120);
+        Activity testActivity4 = new Activity("Free Marks", new Time(0,0),1200);
+
+        testSchedule1.addActivity(testActivity1);
+        testSchedule2.addActivity(testActivity2);
+        testSchedule3.addActivity(testActivity3);
+
+        calendar.addSchedule(testSchedule1);
+        calendar.addSchedule(testSchedule2);
+        calendar.addSchedule(testSchedule3);
+
+        assertEquals(testSchedule1, calendar.findActivitySchedule(testActivity1));
+        assertEquals(testSchedule2, calendar.findActivitySchedule(testActivity2));
+        assertEquals(testSchedule3, calendar.findActivitySchedule(testActivity3));
+        assertNull(calendar.findActivitySchedule(testActivity4));
     }
 }

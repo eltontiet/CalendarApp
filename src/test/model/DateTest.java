@@ -164,8 +164,33 @@ class DateTest {
     }
 
     @Test
-    void testIsLeapYear() {
+    void testGetDayCode() {
+        try {
+            assertEquals(0, date.getDayCode("Sunday"));
+            assertEquals(1, date.getDayCode("Monday"));
+            assertEquals(2, date.getDayCode("Tuesday"));
+            assertEquals(3, date.getDayCode("Wednesday"));
+            assertEquals(4, date.getDayCode("Thursday"));
+            assertEquals(5, date.getDayCode("Friday"));
+            assertEquals(6, date.getDayCode("Saturday"));
 
+            assertEquals(6, date.getDayCode("SATuRDAY"));
+            assertEquals(6, date.getDayCode("saturday"));
+
+        } catch (BadDayOfWeekException e) {
+            fail("Unexpected exception thrown");
+        }
+
+        try {
+            date.getDayCode("Frday");
+
+        } catch (BadDayOfWeekException e) {
+            // pass
+        }
+    }
+
+    @Test
+    void testIsLeapYear() {
         assertFalse(date.isLeapYear(date.getYear()));
         assertTrue(date.isLeapYear(2000));
         assertTrue(date.isLeapYear(2004));
@@ -173,37 +198,65 @@ class DateTest {
     }
 
     @Test
-    void testGetDaysTill() throws PastException { // TODO
-        Date date2 = new Date(2021,1,15);
-        assertEquals(14, date.getDaysTill(date2));
+    void testGetDaysTill() {
+        Date date2;
 
-        date2 = new Date(2025,1,1);
-        assertEquals(1460,date.getDaysTill(date2));
+        try {
+            date2 = new Date(2021, 1, 15);
+            assertEquals(14, date.getDaysTill(date2));
 
-        date2 = new Date(2025,12,1);
-        assertEquals(1794,date.getDaysTill(date2));
+            date2 = new Date(2025, 1, 1);
+            assertEquals(1460, date.getDaysTill(date2));
 
-        date2 = new Date(2025,12,18);
-        assertEquals(1811,date.getDaysTill(date2));
+            date2 = new Date(2025, 12, 1);
+            assertEquals(1794, date.getDaysTill(date2));
 
-        date2 = new Date(2021,12,18);
-        assertEquals(350,date.getDaysTill(date2));
+            date2 = new Date(2025, 12, 18);
+            assertEquals(1811, date.getDaysTill(date2));
 
-        date2 = new Date(2021,2,1);
-        assertEquals(30,date.getDaysTill(date2));
+            date2 = new Date(2021, 12, 18);
+            assertEquals(350, date.getDaysTill(date2));
 
-        date2 = new Date(2020,12,18);
-        Date finalDate1 = date2;
-        assertThrows(PastException.class,() -> date.getDaysTill(finalDate1));
+            date2 = new Date(2021, 2, 1);
+            assertEquals(30, date.getDaysTill(date2));
 
-        date = new Date(2021,12,31);
-        date2 = new Date(2021,10,31);
-        Date finalDate2 = date2;
-        assertThrows(PastException.class,() -> date.getDaysTill(finalDate2));
+        } catch (PastException pe) {
+            fail("Unexpected exception thrown");
+        }
 
-        date2 = new Date(2021,12,18);
-        Date finalDate3 = date2;
-        assertThrows(PastException.class,() -> date.getDaysTill(finalDate3));
+        try {
+            date2 = new Date(2020, 12, 18);
+            Date finalDate1 = date2;
+
+            date.getDaysTill(finalDate1);
+
+            fail("Should have thrown exception");
+        } catch (PastException e) {
+            // pass
+        }
+
+        try {
+            date = new Date(2021, 12, 31);
+            date2 = new Date(2021, 10, 31);
+            Date finalDate2 = date2;
+
+            date.getDaysTill(finalDate2);
+
+            fail("Should have thrown exception");
+        } catch (PastException e) {
+            // pass
+        }
+
+        try {
+            date2 = new Date(2021, 12, 18);
+            Date finalDate3 = date2;
+
+            date.getDaysTill(finalDate3);
+
+            fail("Should have thrown exception");
+        } catch (PastException e) {
+            // pass
+        }
     }
 
     @Test
@@ -362,6 +415,31 @@ class DateTest {
         } catch (DateException e) {
             fail("No error should be thrown");
         }
+    }
+
+    @Test
+    void testEquals() {
+        int a = 1;
+        Date equalDate = new Date(2021,1,1);
+        assertEquals(equalDate,date);
+
+        assertEquals(date,date);
+
+        assertNotEquals(a, date);
+        assertNotEquals(date, null);
+
+        Date wrongYear = new Date(2020,1,1);
+        Date wrongMonth = new Date(2021,2,1);
+        Date wrongDay = new Date(2021,1,2);
+        assertNotEquals(wrongYear, date);
+        assertNotEquals(wrongMonth, date);
+        assertNotEquals(wrongDay, date);
+    }
+
+    @Test
+    void testHashCode() {
+        Date equalDate = new Date(2021,1,1);
+        assertEquals(equalDate.hashCode(),date.hashCode());
     }
 }
 

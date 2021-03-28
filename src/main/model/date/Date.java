@@ -7,6 +7,7 @@ import persistence.Writable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 // Represents a date with a year, month, and day
 public class Date implements Writable {
@@ -353,6 +354,30 @@ public class Date implements Writable {
         }
     }
 
+    // EFFECTS: returns the dayCode from the given date.
+    //          throws BadDayOfWeekException if dayOfWeek is not a proper
+    //          dayOfWeek
+    public int getDayCode(String dayOfWeek) throws BadDayOfWeekException {
+        switch (dayOfWeek.toLowerCase()) {
+            case "sunday":
+                return 0;
+            case "monday":
+                return 1;
+            case "tuesday":
+                return 2;
+            case "wednesday":
+                return 3;
+            case "thursday":
+                return 4;
+            case "friday":
+                return 5;
+            case "saturday":
+                return 6;
+            default:
+                throw new BadDayOfWeekException();
+        }
+    }
+
     // EFFECTS: returns whether or not this year is a leap year
     public Boolean isLeapYear(int year) {
         return ((year % 4) == 0) && (!((year % 100) == 0) || ((year % 400) == 0));
@@ -366,5 +391,22 @@ public class Date implements Writable {
         json.put("date", getDate());
 
         return json;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Date date = (Date) o;
+        return year == date.year && month == date.month && day == date.day;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(year, month, day);
     }
 }

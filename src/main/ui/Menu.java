@@ -249,5 +249,8 @@ public abstract class Menu {
             System.out.println("\t  Title: " + n.getTitle());
             System.out.println("\t  Body: " + n.getBody() + "\n");
         }
+
+        System.out.println("\tEvents:");
+        listEvents(activity);
     }
 }
