@@ -425,7 +425,7 @@ class DateTest {
 
         assertEquals(date,date);
 
-        assertNotEquals(a, date);
+        assertNotEquals(date, a);
         assertNotEquals(date, null);
 
         Date wrongYear = new Date(2020,1,1);

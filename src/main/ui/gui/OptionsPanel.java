@@ -39,6 +39,7 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
         panel = new JPanel();
         panel.setOpaque(false);
         panel.setPreferredSize(new Dimension(WIDTH,HEIGHT));
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 
     // REQUIRES: panel was just reset
@@ -82,6 +83,12 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
     // MODIFIES: this
     // EFFECTS: adds the save and calendars buttons onto the panel
     private void initializePersistence() {
+        JButton deleteCalendarButton = new JButton("Delete Calendar");
+        deleteCalendarButton.setActionCommand("deleteCalendar");
+        deleteCalendarButton.addActionListener(this);
+
+        panel.add(deleteCalendarButton,BorderLayout.NORTH);
+
         JButton calendarsButton = new JButton("Calendars");
         calendarsButton.setActionCommand("calendars");
         calendarsButton.addActionListener(this);
@@ -102,8 +109,21 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
             save();
         }
         if (e.getActionCommand().equals("calendars")) {
-            calendarsMenu();
+            remove(panel);
+            setNewPanel();
+            newCalendarButton();
+            calendarsMenu("load");
         }
+        if (e.getActionCommand().equals("deleteCalendar")) {
+            remove(panel);
+            setNewPanel();
+            calendarsMenu("delete");
+        }
+        newActionPerformed(e);
+    }
+
+    // EFFECTS: does an action based on the button pressed
+    private void newActionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("newCalendar")) {
             graphicalOrganizationApp.getEditorPanel().newCalendar();
         }
@@ -116,6 +136,24 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
         if (e.getActionCommand().equals("newEvent")) {
             graphicalOrganizationApp.getEditorPanel().newEvent();
         }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates a new calendar button
+    private void newCalendarButton() {
+        JButton newCalendarButton = new JButton("New Calendar");
+        newCalendarButton.setActionCommand("newCalendar");
+        newCalendarButton.addActionListener(this);
+        newCalendarButton.setPreferredSize(new Dimension(WIDTH - 50, 30));
+
+        JLabel empty = new JLabel(" ");
+        empty.setOpaque(false);
+        empty.setPreferredSize(new Dimension(WIDTH - 50, 10));
+
+        panel.add(newCalendarButton);
+        panel.add(empty);
+
+        reload();
     }
 
     // EFFECTS: saves the file; if the file cannot be found, places an error on the screen
@@ -132,37 +170,49 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
 
     // MODIFIES: this
     // EFFECTS: renders the calendar menu
-    private void calendarsMenu() {
-        remove(panel);
-        setNewPanel();
+    private void calendarsMenu(String action) {
 
         for (Map.Entry<String,String> entry:config.getFiles().entrySet()) {
-            JButton button = new JButton(entry.getKey());
-            button.addActionListener(e -> load(entry.getValue()));
-            button.setPreferredSize(new Dimension(WIDTH - 50, 30));
-            panel.add(button);
+            String name = entry.getKey();
+
+            if (!graphicalOrganizationApp.getCalendar().getName().equals(name)) {
+                JButton button = new JButton(name);
+                button.addActionListener(e -> calendarAction(action, entry.getValue()));
+                button.setPreferredSize(new Dimension(WIDTH - 50, 30));
+                panel.add(button);
+            }
         }
 
-        JLabel empty = new JLabel(" ");
-        empty.setOpaque(false);
-        empty.setPreferredSize(new Dimension(WIDTH - 50, 10));
-        panel.add(empty);
-
-        JButton newCalendarButton = new JButton("New Calendar");
-        newCalendarButton.setActionCommand("newCalendar");
-        newCalendarButton.addActionListener(this);
-        newCalendarButton.setPreferredSize(new Dimension(WIDTH - 50, 30));
-        panel.add(newCalendarButton);
+        JButton cancel = new JButton("Cancel");
+        cancel.addActionListener(e -> reset());
+        panel.add(cancel);
 
         add(panel);
 
         reload(panel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: decides whether to load or delete the calendar
+    private void calendarAction(String action, String value) {
+        if (action.equals("load")) {
+            load(value);
+        } else if (action.equals("delete")) {
+            persistenceHandler.deleteFile(value);
+            reset();
+        }
+    }
+
     // MODIFIES: this, graphicalOrganizationApp
     // EFFECTS: loads a new calendar
-    private void load(String fileName) {
+    public void load(String fileName) {
         graphicalOrganizationApp.loadCalendar(fileName);
+        reset();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: resets the options panel
+    public void reset() {
         remove(panel);
         renderOptions();
     }

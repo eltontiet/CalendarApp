@@ -54,7 +54,6 @@ public class CalendarPanel extends OrganizationAppPanel implements ActionListene
 
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         renderCalendar();
-        setOpaque(false);
     }
 
     // MODIFIES: this

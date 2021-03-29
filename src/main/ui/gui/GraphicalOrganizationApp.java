@@ -29,7 +29,7 @@ public class GraphicalOrganizationApp extends JFrame {
 
         calendar = persistenceHandler.getCalendar();
 
-        ep = new EditorPanel(calendar);
+        ep = new EditorPanel(this);
         op = new OptionsPanel(this);
         ip = new InformationPanel();
         lp = new JLayeredPane();
@@ -90,9 +90,8 @@ public class GraphicalOrganizationApp extends JFrame {
         lp.remove(ep);
 
         cp = new CalendarPanel(calendar, ip);
-        ep = new EditorPanel(calendar);
+        ep = new EditorPanel(this);
 
-        ip.setGraphicalOrganizationApp(this);
         ip.newEmptyInformation();
 
         lp.add(cp, 0);
@@ -120,5 +119,9 @@ public class GraphicalOrganizationApp extends JFrame {
 
     public Calendar getCalendar() {
         return calendar;
+    }
+
+    public OptionsPanel getOptionsPanel() {
+        return op;
     }
 }

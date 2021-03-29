@@ -24,7 +24,6 @@ public class InformationPanel extends OrganizationAppPanel {
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         information = new JPanel();
-        information.setBackground(OrganizationAppPanel.BACKGROUNDCOLOUR);
         add(information);
     }
 
@@ -114,7 +113,7 @@ public class InformationPanel extends OrganizationAppPanel {
         JButton delete = new JButton("Delete");
 
         edit.addActionListener(e -> {
-            //ep.editActivity(activity);
+            ep.editActivity(activity);
         });
 
         delete.addActionListener(e -> {
@@ -142,7 +141,7 @@ public class InformationPanel extends OrganizationAppPanel {
         JButton delete = new JButton("Delete");
 
         edit.addActionListener(e -> {
-            //ep.editActivity(activity);
+            ep.editEvent(event);
         });
 
         delete.addActionListener(e -> {

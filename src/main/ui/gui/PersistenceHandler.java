@@ -8,6 +8,7 @@ import persistence.CalendarWriter;
 import persistence.ConfigReader;
 import persistence.ConfigWriter;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -34,6 +35,11 @@ public class PersistenceHandler {
     // EFFECTS: returns the calendar
     public Config getConfig() {
         return config;
+    }
+
+    // EFFECTS: sets jsonStore
+    public void setJsonStore(String fileLocation) {
+        jsonStore = fileLocation;
     }
 
     // MODIFIES: this
@@ -117,5 +123,36 @@ public class PersistenceHandler {
         calendarWriter.open();
         calendarWriter.write(calendar);
         calendarWriter.close();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates a new calendar, and loads it
+    public void makeCalendar(Calendar calendar, String jsonStore) throws FileNotFoundException {
+        calendarWriter = new CalendarWriter(jsonStore);
+        calendarWriter.open();
+        calendarWriter.write(calendar);
+        calendarWriter.close();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: saves the calendar to file
+    public void saveConfig() throws FileNotFoundException {
+        configWriter = new ConfigWriter(Config.CONFIG_FILE_LOCATION);
+        configWriter.open();
+        configWriter.write(config);
+        configWriter.close();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: deletes the file with value
+    public void deleteFile(String value) {
+        try {
+            config.removeFile(value);
+            File file = new File(value);
+            file.delete();
+            saveConfig();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
