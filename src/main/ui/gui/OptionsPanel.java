@@ -1,20 +1,24 @@
 package ui.gui;
 
+import javafx.stage.FileChooser;
 import model.Config;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Map;
 
-// TODO: Add new activity, schedule, event, and edit. New Calendar https://www.w3schools.com/java/java_files_delete.asp https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
+// TODO: Add new activity, schedule, event, and edit. https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
 
 // Represents the options panel
 public class OptionsPanel extends OrganizationAppPanel implements ActionListener {
     private static final int WIDTH = 200;
     private static final int HEIGHT = 850;
+
+    private final JFileChooser fc = new JFileChooser();
 
     private Config config;
     private PersistenceHandler persistenceHandler;
@@ -49,10 +53,23 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
         setNewPanel();
 
         initializeAddButtons();
+        initializeImageSelector();
         initializePersistence();
 
         add(panel);
         reload(panel);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates a button to select image from explorer
+    //          to set as background
+    private void initializeImageSelector() {
+        JButton selectBackground = new JButton("Select Background");
+        selectBackground.setActionCommand("selectBackground");
+        selectBackground.addActionListener(this);
+        selectBackground.setPreferredSize(new Dimension(WIDTH - 50, 50));
+
+        panel.add(selectBackground);
     }
 
     // MODIFIES: this
@@ -119,7 +136,35 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
             setNewPanel();
             calendarsMenu("delete");
         }
+        if (e.getActionCommand().equals("selectBackground")) {
+            selectBackground();
+        }
         newActionPerformed(e);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: opens windows explorer to select an image
+    //          and sets it as the background image
+    private void selectBackground() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JFileChooser fc = new JFileChooser();
+
+        if (fc.showOpenDialog(graphicalOrganizationApp) == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            graphicalOrganizationApp.setImage(file.getAbsolutePath());
+        }
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        reset();
     }
 
     // EFFECTS: does an action based on the button pressed

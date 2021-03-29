@@ -112,9 +112,7 @@ public class InformationPanel extends OrganizationAppPanel {
         JButton edit = new JButton("Edit");
         JButton delete = new JButton("Delete");
 
-        edit.addActionListener(e -> {
-            ep.editActivity(activity);
-        });
+        edit.addActionListener(e -> ep.editActivity(activity));
 
         delete.addActionListener(e -> {
             information.remove(editPanel);
@@ -140,9 +138,7 @@ public class InformationPanel extends OrganizationAppPanel {
         JButton edit = new JButton("Edit");
         JButton delete = new JButton("Delete");
 
-        edit.addActionListener(e -> {
-            ep.editEvent(event);
-        });
+        edit.addActionListener(e -> ep.editEvent(event));
 
         delete.addActionListener(e -> {
             information.remove(editPanel);

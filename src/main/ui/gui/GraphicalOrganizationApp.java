@@ -2,13 +2,26 @@ package ui.gui;
 
 import model.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 // Based off of the SpaceInvaders App
 // Creates a graphical organization app
 public class GraphicalOrganizationApp extends JFrame {
+
+    private static Image FAILED_IMAGE = null;
+
+    static {
+        try {
+            FAILED_IMAGE = ImageIO.read(new File("./data/ImageError.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private Calendar calendar;
 
@@ -18,12 +31,19 @@ public class GraphicalOrganizationApp extends JFrame {
     private JLayeredPane lp;
     private InformationPanel ip;
     private PersistenceHandler persistenceHandler;
+    private Image image;
 
     // EFFECTS: starts the application
     public GraphicalOrganizationApp() {
         super("Organization App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //setResizable(false);
+
+        try {
+            image = ImageIO.read(new URL("https://images.unsplash.com/photo-1484312152213-d713e8b7c053"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         persistenceHandler = new PersistenceHandler();
 
@@ -35,10 +55,24 @@ public class GraphicalOrganizationApp extends JFrame {
         lp = new JLayeredPane();
         cp = new CalendarPanel(calendar, ip);
 
+        cp.scaleImage(image);
+
         ip.setGraphicalOrganizationApp(this);
 
         add(ip,BorderLayout.WEST);
 
+        setupLayeredPane();
+
+        add(op,BorderLayout.EAST);
+
+        pack();
+        centreOnScreen();
+        setVisible(true);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes the layered pane
+    private void setupLayeredPane() {
         lp.setPreferredSize(new Dimension(CalendarPanel.WIDTH,CalendarPanel.HEIGHT));
         lp.add(cp,0);
         lp.add(ep,1);
@@ -48,11 +82,23 @@ public class GraphicalOrganizationApp extends JFrame {
         lp.setOpaque(false);
 
         add(lp,BorderLayout.CENTER);
-        add(op,BorderLayout.EAST);
+    }
 
-        pack();
-        centreOnScreen();
-        setVisible(true);
+    // MODIFIES: this
+    // EFFECTS: sets the background image for the calendar
+    public void setImage(String fileLocation) {
+        try {
+            image = ImageIO.read(new File(fileLocation));
+        } catch (IOException e) {
+            image = FAILED_IMAGE;
+        }
+
+        if (image == null) {
+            image = FAILED_IMAGE;
+        }
+
+        cp.scaleImage(image);
+        cp.reload();
     }
 
     // MODIFIES: this
@@ -60,11 +106,6 @@ public class GraphicalOrganizationApp extends JFrame {
     private void centreOnScreen() {
         Dimension desktopSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((desktopSize.width - getWidth()) / 2, (desktopSize.height - getHeight()) / 2);
-    }
-
-    // Starts the app
-    public static void main(String[] args) {
-        new GraphicalOrganizationApp();
     }
 
     // MODIFIES: this
@@ -88,6 +129,8 @@ public class GraphicalOrganizationApp extends JFrame {
     public void reloadCalendar() {
         lp.remove(cp);
         lp.remove(ep);
+
+        cp.scaleImage(image);
 
         cp = new CalendarPanel(calendar, ip);
         ep = new EditorPanel(this);
@@ -123,5 +166,10 @@ public class GraphicalOrganizationApp extends JFrame {
 
     public OptionsPanel getOptionsPanel() {
         return op;
+    }
+
+    // Starts the app
+    public static void main(String[] args) {
+        new GraphicalOrganizationApp();
     }
 }

@@ -44,14 +44,6 @@ public class CalendarPanel extends OrganizationAppPanel implements ActionListene
 
         this.ip = ip;
 
-        try {
-            image = ImageIO.read(new URL("https://images.unsplash.com/photo-1484312152213-d713e8b7c053?"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        scaleImage(image);
-
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         renderCalendar();
     }
@@ -82,7 +74,7 @@ public class CalendarPanel extends OrganizationAppPanel implements ActionListene
     // MODIFIES: this
     // EFFECTS: scales the image given to the size of the calendar, and sets
     //          this.image to it
-    private void scaleImage(Image image) {
+    public void scaleImage(Image image) {
         if (WIDTH / HEIGHT >= image.getWidth(null) / image.getHeight(null)) {
             int newWidth = image.getWidth(null) * HEIGHT / image.getHeight(null);
             this.image = image.getScaledInstance(newWidth, HEIGHT, Image.SCALE_DEFAULT);

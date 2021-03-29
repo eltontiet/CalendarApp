@@ -131,7 +131,21 @@ public class EditorPanel extends OrganizationAppPanel implements ActionListener 
         switch (state) {
             case NEW_CALENDAR:
                 makeCalendar();
+            case NEW_SCHEDULE:
+                makeSchedule();
         }
+    }
+
+    // MODIFIES: this, graphicalOrganizationApp.getCalendar()
+    // EFFECTS: adds schedule to calendar
+    private void makeSchedule() {
+        String scheduleName = nameField.getText();
+        Schedule schedule = new Schedule(scheduleName);
+
+        graphicalOrganizationApp.getCalendar().addSchedule(schedule);
+
+        graphicalOrganizationApp.getCalendarPanel().setVisible(true);
+        resetPanel();
     }
 
     // MODIFIES: this
@@ -163,7 +177,7 @@ public class EditorPanel extends OrganizationAppPanel implements ActionListener 
         }
     }
 
-    // MODIFIES: this
+    // MODIFIES: this, graphicalOrganizationApp.getCalendarPanel()
     // EFFECTS: sets the panel as visible, and refreshes the app
     private void showPanel() {
         graphicalOrganizationApp.getCalendarPanel().setVisible(false);
@@ -171,7 +185,7 @@ public class EditorPanel extends OrganizationAppPanel implements ActionListener 
         reload();
     }
 
-    // MODIFIES: this
+    // MODIFIES: this, graphicalOrganizationApp.getCalendarPanel()
     // EFFECTS: clears the panel, sets it as invisible, and
     //          refreshes the calendar
     private void resetPanel() {
@@ -181,7 +195,7 @@ public class EditorPanel extends OrganizationAppPanel implements ActionListener 
         reload();
     }
 
-    // MODIFIES: this
+    // MODIFIES: this, op
     // EFFECTS: resets the panel, and resets the options menu
     private void cancelEdit() {
         OptionsPanel op = graphicalOrganizationApp.getOptionsPanel();
