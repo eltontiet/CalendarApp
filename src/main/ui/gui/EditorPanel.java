@@ -12,14 +12,22 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 // Represents an editor. Will overlap the CalendarPanel.
-public class EditorPanel extends OrganizationAppPanel implements ActionListener {
+public class EditorPanel extends OrganizationAppPanel {
     private GraphicalOrganizationApp graphicalOrganizationApp;
     private List<Date> dates;
     private List<Note> notes;
     private State state;
 
+    private JPanel errorPanel;
+
     private JTextField nameField;
     private JTextField scheduleField;
+    private JTextField noteTitle;
+    private JTextArea noteBody;
+    private JTextField duration;
+    private JTextField yearInput;
+    private JTextField monthInput;
+    private JTextField dayInput;
 
     private enum State {
         NEW_CALENDAR,
@@ -45,7 +53,7 @@ public class EditorPanel extends OrganizationAppPanel implements ActionListener 
     public void newCalendar() {
         resetPanel();
         state = State.NEW_CALENDAR;
-        addNameField();
+        addNameField("Calendar");
         addScheduleField();
 
         addConfirmButtons();
@@ -53,31 +61,55 @@ public class EditorPanel extends OrganizationAppPanel implements ActionListener 
         showPanel();
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets ep to visible, and creates the name field
     public void newSchedule() {
+        resetPanel();
+        state = State.NEW_SCHEDULE;
+        addNameField("Schedule");
+
+        addConfirmButtons();
+
+        showPanel();
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets ep to visible, and creates the name field and buttons
     public void newActivity() {
+        resetPanel();
+        state = State.NEW_SCHEDULE;
+        addNameField("Schedule");
+
+        addConfirmButtons();
+
+        showPanel();
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets ep to visible, and creates the name field and buttons
     public void newEvent() {
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets ep to visible, and creates the name field and buttons
     public void editActivity(Activity activity) {
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets ep to visible, and creates the name field and buttons
     public void editEvent(Event event) {
 
     }
 
     // MODIFIES: this
     // EFFECTS: adds a name field to type into
-    public void addNameField() {
+    public void addNameField(String objectName) {
         JPanel namePanel = new JPanel();
         namePanel.setPreferredSize(new Dimension(CalendarPanel.WIDTH - 50, 100));
         namePanel.setOpaque(false);
 
-        JLabel text = new JLabel("Calendar Name: ");
+        JLabel text = new JLabel(objectName + " Name: ");
         nameField = new JTextField();
 
         nameField.setColumns(50);
@@ -85,7 +117,7 @@ public class EditorPanel extends OrganizationAppPanel implements ActionListener 
         namePanel.add(text);
         namePanel.add(nameField);
 
-        add(namePanel);
+        add(namePanel,BorderLayout.CENTER);
     }
 
     // MODIFIES: this
@@ -102,7 +134,7 @@ public class EditorPanel extends OrganizationAppPanel implements ActionListener 
 
         schedulePanel.add(text);
         schedulePanel.add(scheduleField);
-        add(schedulePanel);
+        add(schedulePanel,BorderLayout.CENTER);
     }
 
     // MODIFIES: this
@@ -121,7 +153,7 @@ public class EditorPanel extends OrganizationAppPanel implements ActionListener 
         panel.add(cancel, BorderLayout.WEST);
         panel.add(confirm, BorderLayout.EAST);
 
-        add(panel);
+        add(panel,BorderLayout.CENTER);
 
     }
 
@@ -154,8 +186,17 @@ public class EditorPanel extends OrganizationAppPanel implements ActionListener 
     private void makeCalendar() {
         PersistenceHandler persistenceHandler = graphicalOrganizationApp.getPersistenceHandler();
 
+        if (calendarError()) {
+            return;
+        }
+
         String calendarName = nameField.getText();
         String scheduleName = scheduleField.getText();
+
+        if (scheduleName.equals("")) {
+            scheduleName = "Schedule";
+        }
+
         String jsonStore = "./data/" + calendarName + ".json";
         Config config =  persistenceHandler.getConfig();
 
@@ -177,6 +218,23 @@ public class EditorPanel extends OrganizationAppPanel implements ActionListener 
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: returns true and generates an error label
+    //          if calendar already exists, else returns false
+    private boolean calendarError() {
+        boolean error = false;
+        String calendarName = nameField.getText();
+        Config config = graphicalOrganizationApp.getPersistenceHandler().getConfig();
+
+        if (config.getFiles().containsKey(calendarName)) {
+            errorPanel.add(new JLabel("Calendar already exists"));
+            error = true;
+            reload();
+        }
+
+        return error;
+    }
+
     // MODIFIES: this, graphicalOrganizationApp.getCalendarPanel()
     // EFFECTS: sets the panel as visible, and refreshes the app
     private void showPanel() {
@@ -190,7 +248,12 @@ public class EditorPanel extends OrganizationAppPanel implements ActionListener 
     //          refreshes the calendar
     private void resetPanel() {
         graphicalOrganizationApp.getCalendarPanel().setVisible(true);
+
         removeAll();
+
+        errorPanel = new JPanel();
+        add(errorPanel,BorderLayout.SOUTH);
+
         setVisible(false);
         reload();
     }
@@ -201,10 +264,5 @@ public class EditorPanel extends OrganizationAppPanel implements ActionListener 
         OptionsPanel op = graphicalOrganizationApp.getOptionsPanel();
         op.reset();
         resetPanel();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }

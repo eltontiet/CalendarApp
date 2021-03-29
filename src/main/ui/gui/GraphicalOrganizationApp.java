@@ -135,6 +135,8 @@ public class GraphicalOrganizationApp extends JFrame {
         cp = new CalendarPanel(calendar, ip);
         ep = new EditorPanel(this);
 
+        cp.scaleImage(image);
+
         ip.newEmptyInformation();
 
         lp.add(cp, 0);
