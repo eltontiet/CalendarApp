@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Map;
 
-// TODO: Add new activity, schedule, event, and edit. https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
+// TODO: Add new activity, event, and edit.
 
 // Represents the options panel
 public class OptionsPanel extends OrganizationAppPanel implements ActionListener {
@@ -103,6 +103,7 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
         JButton deleteCalendarButton = new JButton("Delete Calendar");
         deleteCalendarButton.setActionCommand("deleteCalendar");
         deleteCalendarButton.addActionListener(this);
+        deleteCalendarButton.setPreferredSize(new Dimension(WIDTH - 50, 24));
 
         panel.add(deleteCalendarButton,BorderLayout.NORTH);
 
@@ -176,7 +177,7 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
             graphicalOrganizationApp.getEditorPanel().newSchedule();
         }
         if (e.getActionCommand().equals("newActivity")) {
-            graphicalOrganizationApp.getEditorPanel().newActivity();
+            graphicalOrganizationApp.getEditorPanel().chooseSchedule();
         }
         if (e.getActionCommand().equals("newEvent")) {
             graphicalOrganizationApp.getEditorPanel().newEvent();

@@ -272,12 +272,12 @@ public class OrganizationApp {
     private void viewCalendar() {
         System.out.println("\n" + calendar.getName() + ":");
 
+        printEvents(calendar.getEvents());
+
         for (Schedule i: calendar.getSchedules()) {
             System.out.println("\nSchedule: " + i.getName());
             printActivities(i);
         }
-
-        printEvents(calendar.getEvents());
     }
 
     // EFFECTS: outputs activities in schedule, and all notes

@@ -27,7 +27,7 @@ public class ConfigReaderTest {
         ConfigReader reader = new ConfigReader("./data/testConfigReaderEmptyFile.json");
         try {
             Config c = reader.read();
-            assertEquals("./data/calendarSave.json", c.getCurrentFile());
+            assertEquals("./data/Default Calendar.json", c.getCurrentFile());
             assertEquals(0, c.getFiles().size());
         } catch (IOException e) {
             fail("File could not be read");

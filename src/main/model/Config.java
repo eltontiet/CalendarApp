@@ -11,7 +11,7 @@ import java.util.Map;
 // Represents a config file with a path to the current file, and a map of calendar names, and file locations
 // The first string in files is the calendar name, and the second string is the file location
 public class Config {
-    public static final String DEFAULT_SAVE_LOCATION = "./data/calendarSave.json";
+    public static final String DEFAULT_SAVE_LOCATION = "./data/Default Calendar.json";
     public static final String CONFIG_FILE_LOCATION = "./data/cfg.json";
 
     String currentFile;

@@ -10,7 +10,7 @@
         },
         {
             "name": "Default Calendar",
-            "fileLocation": "./data/calendarSave.json"
+            "fileLocation": "./data/Default Calendar.json"
         },
         {
             "name": "University",

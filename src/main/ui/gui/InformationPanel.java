@@ -273,7 +273,7 @@ public class InformationPanel extends OrganizationAppPanel {
             title.setAlignmentX(JLabel.LEFT_ALIGNMENT);
             information.add(title);
 
-            JTextArea body = new JTextArea(indent + note.getBody());
+            JTextArea body = new JTextArea(note.getBody());
 
             body.setMinimumSize(new Dimension(WIDTH, 50));
 

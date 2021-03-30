@@ -51,7 +51,7 @@ public class CalendarPanel extends OrganizationAppPanel implements ActionListene
     // MODIFIES: this
     // EFFECTS: renders the calendar
     private void renderCalendar() {
-        monthYearLabel = new JLabel(getMonthString() + " " + year);
+        monthYearLabel = new JLabel(today.getMonthString(month) + " " + year);
         monthYearLabel.setSize(new Dimension(50,20));
 
         JButton previousMonth = new JButton("<");
@@ -81,47 +81,6 @@ public class CalendarPanel extends OrganizationAppPanel implements ActionListene
         } else {
             int newHeight = image.getHeight(null) * WIDTH / image.getWidth(null);
             this.image = image.getScaledInstance(WIDTH, newHeight, Image.SCALE_DEFAULT);
-        }
-    }
-
-    // TODO: Should be put in Date class
-    // REQUIRES: 1 <= today.getMonth() <= 12
-    // EFFECTS: returns the month as a string
-    private String getMonthString() {
-        switch (month) {
-            case 1:
-                return "January";
-            case 2:
-                return "February";
-            case 3:
-                return "March";
-            case 4:
-                return "April";
-            case 5:
-                return "May";
-            case 6:
-                return "June";
-            default:
-                return lastSixMonths();
-        }
-    }
-
-    // REQUIRES: 7 <= month <= 12
-    // EFFECTS: returns the month as a string
-    private String lastSixMonths() {
-        switch (month) {
-            case 7:
-                return "July";
-            case 8:
-                return "August";
-            case 9:
-                return "September";
-            case 10:
-                return "October";
-            case 11:
-                return "November";
-            default:
-                return "December";
         }
     }
 
@@ -366,7 +325,7 @@ public class CalendarPanel extends OrganizationAppPanel implements ActionListene
             } else {
                 month -= 1;
             }
-            monthYearLabel.setText(getMonthString() + " " + year);
+            monthYearLabel.setText(today.getMonthString(month) + " " + year);
             renderMonth(year,month);
             reload();
         } else {
@@ -379,7 +338,7 @@ public class CalendarPanel extends OrganizationAppPanel implements ActionListene
                 month += 1;
             }
 
-            monthYearLabel.setText(getMonthString() + " " + year);
+            monthYearLabel.setText(today.getMonthString(month) + " " + year);
             renderMonth(year,month);
             reload();
         }
