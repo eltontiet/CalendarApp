@@ -6,7 +6,7 @@ This application aims to plan out your day. It will feature:
 
 - Calendar
 - Schedule
-- To-do list on schedule
+- To-do lists on schedule
 - Reminders
 - Notifications and alarms for schedule and reminders
 - (Maybe) Presets to allow for easy setup
@@ -27,7 +27,27 @@ different websites to teach, it is very easy to miss an assignment or lecture.
 - As a user, I want to be able to load different calendars
 - As a user, I want to have my file loaded when I start the application
 
-# Not yet implemented
+## Phase 4: Task 2
+
+Exceptions have been implemented in:
+
+- Date
+- Time
+- Config
+
+Type hierarchies have been implemented in:
+
+- Menu
+  - ActivityMenu
+  - CalendarMenu
+  - EventMenu
+  - ScheduleMenu
+  
+Map has been implemented in:
+
+- Config
+
+## Not yet implemented
 - As a user, I want to be able to mark my tasks as complete
 - As a user, I want to be reminded about what tasks I need to complete, and my upcoming activities
 - As a user, I want to choose when I will be reminded about my activities
