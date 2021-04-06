@@ -1,6 +1,5 @@
 package ui.gui;
 
-import javafx.stage.FileChooser;
 import model.Config;
 
 import javax.swing.*;
@@ -18,10 +17,6 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
     private static final int WIDTH = 200;
     private static final int HEIGHT = 850;
 
-    private final JFileChooser fc = new JFileChooser();
-
-    private Config config;
-    private PersistenceHandler persistenceHandler;
     private GraphicalOrganizationApp graphicalOrganizationApp;
     private JPanel panel;
 
@@ -31,8 +26,6 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
         super();
         setPreferredSize(new Dimension(WIDTH,HEIGHT));
         this.graphicalOrganizationApp = graphicalOrganizationApp;
-        this.persistenceHandler = graphicalOrganizationApp.getPersistenceHandler();
-        config = persistenceHandler.getConfig();
 
         renderOptions();
     }
@@ -205,7 +198,7 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
     // EFFECTS: saves the file; if the file cannot be found, places an error on the screen
     private void save() {
         try {
-            persistenceHandler.saveCalendar();
+            graphicalOrganizationApp.getPersistenceHandler().saveCalendar();
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();
             JLabel error = new JLabel("The file could not be saved");
@@ -217,6 +210,7 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
     // MODIFIES: this
     // EFFECTS: renders the calendar menu
     private void calendarsMenu(String action) {
+        Config config = graphicalOrganizationApp.getPersistenceHandler().getConfig();
 
         for (Map.Entry<String,String> entry:config.getFiles().entrySet()) {
             String name = entry.getKey();
@@ -244,7 +238,7 @@ public class OptionsPanel extends OrganizationAppPanel implements ActionListener
         if (action.equals("load")) {
             load(value);
         } else if (action.equals("delete")) {
-            persistenceHandler.deleteFile(value);
+            graphicalOrganizationApp.getPersistenceHandler().deleteFile(value);
             reset();
         }
     }

@@ -15,6 +15,7 @@ public class GraphicalOrganizationApp extends JFrame {
 
     private static Image FAILED_IMAGE = null;
 
+    // TODO
     static {
         try {
             FAILED_IMAGE = ImageIO.read(new File("./data/ImageError.png"));
@@ -37,7 +38,7 @@ public class GraphicalOrganizationApp extends JFrame {
     public GraphicalOrganizationApp() {
         super("Organization App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //setResizable(false);
+        setResizable(false);
 
         try {
             image = ImageIO.read(new URL("https://images.unsplash.com/photo-1484312152213-d713e8b7c053"));
@@ -53,7 +54,7 @@ public class GraphicalOrganizationApp extends JFrame {
         op = new OptionsPanel(this);
         ip = new InformationPanel();
         lp = new JLayeredPane();
-        cp = new CalendarPanel(calendar, ip);
+        cp = new CalendarPanel(this);
 
         cp.scaleImage(image);
 
@@ -132,7 +133,7 @@ public class GraphicalOrganizationApp extends JFrame {
 
         cp.scaleImage(image);
 
-        cp = new CalendarPanel(calendar, ip);
+        cp = new CalendarPanel(this);
         ep = new EditorPanel(this);
 
         cp.scaleImage(image);
@@ -168,6 +169,10 @@ public class GraphicalOrganizationApp extends JFrame {
 
     public OptionsPanel getOptionsPanel() {
         return op;
+    }
+
+    public InformationPanel getInformationPanel() {
+        return ip;
     }
 
     // Starts the app

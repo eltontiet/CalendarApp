@@ -14,8 +14,6 @@ public class InformationPanel extends OrganizationAppPanel {
     private static final String indent = "    ";
 
     GraphicalOrganizationApp graphicalOrganizationApp;
-    CalendarPanel cp;
-    EditorPanel ep;
     JPanel information;
 
     // Initializes an empty InformationPanel with a set size
@@ -31,8 +29,6 @@ public class InformationPanel extends OrganizationAppPanel {
     // EFFECTS: sets graphicalOrganizationApp, cp, and ep
     public void setGraphicalOrganizationApp(GraphicalOrganizationApp graphicalOrganizationApp) {
         this.graphicalOrganizationApp = graphicalOrganizationApp;
-        this.cp = graphicalOrganizationApp.getCalendarPanel();
-        this.ep = graphicalOrganizationApp.getEditorPanel();
     }
 
 
@@ -88,7 +84,7 @@ public class InformationPanel extends OrganizationAppPanel {
 
 
         for (Event event: activity.getEvents()) {
-            cp.addEventPreview(information,event);
+            graphicalOrganizationApp.getCalendarPanel().addEventPreview(information,event);
         }
 
         information.add(Box.createRigidArea(new Dimension(0,20)));
@@ -112,7 +108,7 @@ public class InformationPanel extends OrganizationAppPanel {
         JButton edit = new JButton("Edit");
         JButton delete = new JButton("Delete");
 
-        edit.addActionListener(e -> ep.editActivity(activity));
+        edit.addActionListener(e -> graphicalOrganizationApp.getEditorPanel().editActivity(activity));
 
         delete.addActionListener(e -> {
             information.remove(editPanel);
@@ -138,7 +134,7 @@ public class InformationPanel extends OrganizationAppPanel {
         JButton edit = new JButton("Edit");
         JButton delete = new JButton("Delete");
 
-        edit.addActionListener(e -> ep.editEvent(event));
+        edit.addActionListener(e -> graphicalOrganizationApp.getEditorPanel().editEvent(event));
 
         delete.addActionListener(e -> {
             information.remove(editPanel);

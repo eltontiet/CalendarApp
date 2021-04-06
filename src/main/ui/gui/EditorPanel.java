@@ -17,8 +17,8 @@ public class EditorPanel extends OrganizationAppPanel {
     private static final int ROWS = 10;
 
     private GraphicalOrganizationApp graphicalOrganizationApp;
-    private List<Date> dates;
-    private List<Note> notes;
+    private List<Date> datesToAdd;
+    private List<Note> notesToAdd;
     private State state;
     private Schedule selectedSchedule;
 
@@ -230,7 +230,7 @@ public class EditorPanel extends OrganizationAppPanel {
         datesPanel.add(add);
         add(datesPanel, BorderLayout.CENTER);
 
-        dates = new ArrayList<>();
+        datesToAdd = new ArrayList<>();
     }
 
     // MODIFIES: this
@@ -321,7 +321,7 @@ public class EditorPanel extends OrganizationAppPanel {
 
         add(Box.createRigidArea(new Dimension(0,100)));
 
-        notes = new ArrayList<>();
+        notesToAdd = new ArrayList<>();
     }
 
     // EFFECTS: returns a panel to accept a note body
@@ -389,11 +389,11 @@ public class EditorPanel extends OrganizationAppPanel {
 
         Activity activity = new Activity(name, time, duration);
 
-        for (Date d: dates) {
+        for (Date d: datesToAdd) {
             activity.addDate(d);
         }
 
-        for (Note n: notes) {
+        for (Note n: notesToAdd) {
             activity.addNote(n);
         }
 
@@ -469,7 +469,7 @@ public class EditorPanel extends OrganizationAppPanel {
         int month = Integer.parseInt(monthInput.getText());
         int day = Integer.parseInt(dayInput.getText());
 
-        dates.add(new Date(year, month, day));
+        datesToAdd.add(new Date(year, month, day));
 
         broadcast("Date successfully added!");
     }
@@ -487,7 +487,7 @@ public class EditorPanel extends OrganizationAppPanel {
 
         Date date = new Date(year,month,day);
 
-        if (dates.contains(date)) {
+        if (datesToAdd.contains(date)) {
             broadcast("Date already exists in activity");
             return true;
         }
@@ -573,7 +573,7 @@ public class EditorPanel extends OrganizationAppPanel {
 
         Note note = new Note(noteTitle.getText(), noteBody.getText());
 
-        notes.add(note);
+        notesToAdd.add(note);
 
         broadcast("Note successfully added!");
     }
@@ -583,7 +583,7 @@ public class EditorPanel extends OrganizationAppPanel {
     //          already exists, otherwise returns false
     private boolean checkNote() {
         String title = noteTitle.getText();
-        for (Note n: notes) {
+        for (Note n: notesToAdd) {
             if (n.getTitle().equals(title)) {
                 broadcast("Note with same title already exists");
                 return true;

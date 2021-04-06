@@ -7,15 +7,12 @@ import model.Event;
 import model.Schedule;
 import model.date.Date;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.net.URL;
 
 // TODO: add functionality to view by schedule
 // Represents the calendar
@@ -23,11 +20,10 @@ public class CalendarPanel extends OrganizationAppPanel implements ActionListene
     public static final int WIDTH = 1100;
     public static final int HEIGHT = 860;
 
-    Calendar calendar;
+    GraphicalOrganizationApp graphicalOrganizationApp;
     JLabel monthYearLabel;
     JPanel daysOfWeek;
     JPanel calendarRender;
-    InformationPanel ip;
     Image image;
     Date today;
     int year;
@@ -35,14 +31,12 @@ public class CalendarPanel extends OrganizationAppPanel implements ActionListene
 
     // MODIFIES: this
     // EFFECTS: Creates all of the modules to visualize the calendar
-    public CalendarPanel(Calendar calendar, InformationPanel ip) {
+    public CalendarPanel(GraphicalOrganizationApp graphicalOrganizationApp) {
         super();
-        this.calendar = calendar;
+        this.graphicalOrganizationApp = graphicalOrganizationApp;
         today = getToday();
         year = today.getYear();
         month = today.getMonth();
-
-        this.ip = ip;
 
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         renderCalendar();
@@ -210,6 +204,7 @@ public class CalendarPanel extends OrganizationAppPanel implements ActionListene
     // MODIFIES: rect
     // EFFECTS: adds all events and activities onto the calendar
     private void addDayEvents(JPanel panel, Date date) {
+        Calendar calendar = graphicalOrganizationApp.getCalendar();
         for (Schedule schedule: calendar.getSchedules()) {
             addActivitiesOnDate(panel, date, schedule);
         }
@@ -243,7 +238,7 @@ public class CalendarPanel extends OrganizationAppPanel implements ActionListene
         eventRect.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                ip.setInformation(event);
+                graphicalOrganizationApp.getInformationPanel().setInformation(event);
             }
         });
 
@@ -291,7 +286,7 @@ public class CalendarPanel extends OrganizationAppPanel implements ActionListene
         activityRect.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                ip.setInformation(a);
+                graphicalOrganizationApp.getInformationPanel().setInformation(a);
             }
         });
 
