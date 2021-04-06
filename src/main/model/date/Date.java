@@ -423,13 +423,13 @@ public class Date implements Writable {
             case 6:
                 return "June";
             default:
-                return lastSixMonths();
+                return lastSixMonths(month);
         }
     }
 
     // REQUIRES: 7 <= month <= 12
     // EFFECTS: returns the month as a string
-    private String lastSixMonths() {
+    private String lastSixMonths(int month) {
         switch (month) {
             case 7:
                 return "July";

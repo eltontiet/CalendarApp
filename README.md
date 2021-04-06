@@ -47,6 +47,12 @@ Map has been implemented in:
 
 - Config
 
+## Phase 4: Task 3
+
+- Use built in java classes for Date and Time
+- Let Calendar act as Schedule, to remove Schedule completely
+- Make Note a Map in activity, instead of its own class
+
 ## Not yet implemented
 - As a user, I want to be able to mark my tasks as complete
 - As a user, I want to be reminded about what tasks I need to complete, and my upcoming activities

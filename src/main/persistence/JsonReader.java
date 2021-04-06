@@ -25,6 +25,6 @@ public abstract class JsonReader {
             stream.forEach(s -> contentBuilder.append(s));
         }
 
-        return  contentBuilder.toString();
+        return contentBuilder.toString();
     }
 }

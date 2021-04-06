@@ -441,6 +441,22 @@ class DateTest {
         Date equalDate = new Date(2021,1,1);
         assertEquals(equalDate.hashCode(),date.hashCode());
     }
+
+    @Test
+    void testGetMonthString() {
+        assertEquals("January",date.getMonthString(1));
+        assertEquals("February",date.getMonthString(2));
+        assertEquals("March",date.getMonthString(3));
+        assertEquals("April",date.getMonthString(4));
+        assertEquals("May",date.getMonthString(5));
+        assertEquals("June",date.getMonthString(6));
+        assertEquals("July",date.getMonthString(7));
+        assertEquals("August",date.getMonthString(8));
+        assertEquals("September",date.getMonthString(9));
+        assertEquals("October",date.getMonthString(10));
+        assertEquals("November",date.getMonthString(11));
+        assertEquals("December",date.getMonthString(12));
+    }
 }
 
 class TimeTest {
