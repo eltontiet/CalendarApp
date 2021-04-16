@@ -1,21 +1,8 @@
 {
-    "schedules": [
-        {
-            "activities": [{
-                "duration": 0,
-                "notes": [],
-                "name": "Working",
-                "dates": [{"date": "2021-03-07"}],
-                "time": "19:26",
-                "events": []
-            }],
-            "name": "Shakeeb"
-        },
-        {
-            "activities": [],
-            "name": "Hey"
-        }
-    ],
+    "schedules": [{
+        "activities": [],
+        "name": "Default Schedule"
+    }],
     "name": "Default Calendar",
     "events": []
 }

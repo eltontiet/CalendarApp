@@ -618,7 +618,7 @@ public class EditorPanel extends OrganizationAppPanel {
         }
 
         String jsonStore = "./data/" + calendarName + ".json";
-        Config config =  persistenceHandler.getConfig();
+        Config config = persistenceHandler.getConfig();
 
         Calendar calendar = new Calendar(calendarName);
         calendar.addSchedule(new Schedule(scheduleName));

@@ -1,25 +1,7 @@
 {
-    "files": [
-        {
-            "name": "Skrrt Skrrt",
-            "fileLocation": "./data/skrrtSkrrt.json"
-        },
-        {
-            "name": "School",
-            "fileLocation": "./data/School.json"
-        },
-        {
-            "name": "Default Calendar",
-            "fileLocation": "./data/Default Calendar.json"
-        },
-        {
-            "name": "University",
-            "fileLocation": "./data/university.json"
-        },
-        {
-            "name": "Elton Time",
-            "fileLocation": "./data/juicyBoi.json"
-        }
-    ],
+    "files": [{
+        "name": "School",
+        "fileLocation": "./data/School.json"
+    }],
     "currentFile": "./data/School.json"
 }
