@@ -27,33 +27,9 @@ different websites to teach, it is very easy to miss an assignment or lecture.
 - As a user, I want to be able to load different calendars
 - As a user, I want to have my file loaded when I start the application
 
-## Phase 4: Task 2
-
-Exceptions have been implemented in:
-
-- Date
-- Time
-- Config
-
-Type hierarchies have been implemented in:
-
-- Menu
-  - ActivityMenu
-  - CalendarMenu
-  - EventMenu
-  - ScheduleMenu
-  
-Map has been implemented in:
-
-- Config
-
-## Phase 4: Task 3
-
-- Use built in java classes for Date and Time
-- Let Calendar act as Schedule, to remove Schedule completely
-- Make Note a Map in activity, instead of its own class
-
 ## Not yet implemented
 - As a user, I want to be able to mark my tasks as complete
 - As a user, I want to be reminded about what tasks I need to complete, and my upcoming activities
 - As a user, I want to choose when I will be reminded about my activities
+
+Need to move Github accounts
